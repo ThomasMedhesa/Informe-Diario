@@ -49,20 +49,16 @@ def _actuales_desde_historico(hist, contratos):
     return salida
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Genera el informe diario de precios")
-    parser.add_argument("--fecha", type=str, default=None,
-                        help="Fecha 'hoy' en formato YYYY-MM-DD (por defecto: hoy)")
-    parser.add_argument("--enviar", dest="enviar", action="store_true", default=True,
-                        help="Envía el informe por correo tras generarlo (por defecto)")
-    parser.add_argument("--no-enviar", dest="enviar", action="store_false",
-                        help="Genera el PDF sin enviarlo por correo")
-    args = parser.parse_args()
+def ejecutar(fecha=None, enviar=False):
+    """Genera el informe y (si ``enviar``) lo manda por correo.
 
+    Devuelve la ruta del PDF generado. Con ``enviar=False`` (usado por la
+    interfaz web y --no-enviar) solo se genera el PDF para revisión.
+    """
     config.asegurar_dirs()
 
-    if args.fecha:
-        fecha_hoy = pd.Timestamp(args.fecha).normalize()
+    if fecha:
+        fecha_hoy = pd.Timestamp(fecha).normalize()
     else:
         fecha_hoy = pd.Timestamp(datetime.now().date())
     fecha_entrega = fecha_hoy + pd.Timedelta(days=1)
@@ -159,22 +155,36 @@ def main():
 
     log.info("=== Informe completado: %s ===", destino)
 
-    # 6) Envío por correo
-    if not args.enviar:
-        log.info("--no-enviar: se omite el envío por correo")
-        return 0
-    if not enviar_correo.es_dia_laborable():
+    # 6) Envío por correo (solo si se pide explícitamente)
+    if not enviar:
+        log.info("Envío desactivado: solo generación (revisión previa)")
+    elif not enviar_correo.es_dia_laborable():
         log.info("Hoy no es día laborable (lunes a viernes), se omite el envío")
-        return 0
-    if os.name != "nt":
+    elif os.name != "nt":
         log.info("Plataforma no Windows, se omite el envío vía Outlook")
-        return 0
-    contactos = enviar_correo.leer_contactos()
-    if not contactos:
-        log.warning("Sin destinatarios, se omite el envío")
-        return 0
-    enviados = enviar_correo.enviar_informe(destino, contactos)
-    log.info("Informe enviado a %d destinatarios", enviados)
+    else:
+        contactos = enviar_correo.leer_contactos()
+        if not contactos:
+            log.warning("Sin destinatarios, se omite el envío")
+        else:
+            enviados = enviar_correo.enviar_informe(destino, contactos)
+            log.info("Informe enviado a %d destinatarios", enviados)
+
+    return destino
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Genera el informe diario de precios")
+    parser.add_argument("--fecha", type=str, default=None,
+                        help="Fecha 'hoy' en formato YYYY-MM-DD (por defecto: hoy)")
+    parser.add_argument("--enviar", dest="enviar", action="store_true", default=True,
+                        help="Envía el informe por correo tras generarlo (por defecto)")
+    parser.add_argument("--no-enviar", dest="enviar", action="store_false",
+                        help="Genera el PDF sin enviarlo por correo")
+    args = parser.parse_args()
+
+    ejecutar(args.fecha, args.enviar)
+    return 0
 
 
 if __name__ == "__main__":

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión y envío — Informe de precios</title>
+<style>
+  :root {
+    --azul: #1a5276;
+    --azul-c: #007fcc;
+    --verde: #1e8449;
+    --rojo: #c0392b;
+    --gris: #566573;
+    --gris-claro: #f2f3f4;
+    --borde: #d5d8dc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    background: #f8f9f9; color: #2c3e50;
+  }
+  header {
+    background: var(--azul); color: #fff; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  header h1 { font-size: 18px; margin: 0; font-weight: 600; }
+  header small { opacity: .85; }
+  main {
+    display: grid; grid-template-columns: 340px 1fr; gap: 16px;
+    padding: 16px 24px; max-width: 1500px; margin: 0 auto;
+  }
+  section.panel {
+    background: #fff; border: 1px solid var(--borde); border-radius: 8px; padding: 16px;
+  }
+  section.panel h2 { font-size: 14px; margin: 0 0 12px; color: var(--azul); text-transform: uppercase; letter-spacing: .4px; }
+  .col-izq { display: flex; flex-direction: column; gap: 16px; }
+  .btn {
+    border: none; border-radius: 6px; padding: 10px 14px; font-size: 14px;
+    cursor: pointer; color: #fff; font-weight: 600; width: 100%;
+  }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .btn-generar { background: var(--azul-c); }
+  .btn-enviar { background: var(--verde); }
+  .btn-ghost { background: none; color: var(--gris); border: 1px solid var(--borde); font-weight: 500; }
+  .lista { max-height: 240px; overflow-y: auto; border: 1px solid var(--borde); border-radius: 6px; margin-top: 10px; }
+  .pdf-item {
+    padding: 9px 12px; border-bottom: 1px solid #eef1f2; cursor: pointer;
+    display: flex; justify-content: space-between; gap: 8px; align-items: center;
+  }
+  .pdf-item:last-child { border-bottom: none; }
+  .pdf-item:hover { background: var(--gris-claro); }
+  .pdf-item.sel { background: #eaf2f8; border-left: 4px solid var(--azul-c); }
+  .pdf-item b { font-size: 13px; font-weight: 600; }
+  .pdf-item small { color: var(--gris); font-size: 12px; }
+  .estado { font-size: 13px; color: var(--gris); margin-top: 10px; min-height: 18px; }
+  .estado.error { color: var(--rojo); }
+  .estado.ok { color: var(--verde); }
+  #pdfFrame { width: 100%; height: calc(100vh - 120px); min-height: 480px; border: 1px solid var(--borde); border-radius: 8px; background: #fff; }
+  textarea {
+    width: 100%; min-height: 110px; border: 1px solid var(--borde); border-radius: 6px;
+    padding: 10px; font-family: Consolas, monospace; font-size: 13px; resize: vertical;
+  }
+  .fila-edit { display: flex; gap: 8px; margin-top: 10px; }
+  .avisos { font-size: 12px; color: var(--gris); margin-top: 8px; line-height: 1.5; }
+  .fila-nums { font-size: 13px; color: var(--gris); margin-top: 10px; }
+  .spinner {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid #fff;
+    border-top-color: transparent; border-radius: 50%; animation: giro .7s linear infinite;
+    vertical-align: -2px; margin-right: 6px;
+  }
+  @keyframes giro { to { transform: rotate(360deg); } }
+  .oculto { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Informe diario de precios energéticos — Revisión y envío</h1>
+  <small id="cabecera-info"></small>
+</header>
+
+<main>
+  <div class="col-izq">
+    <section class="panel">
+      <h2>Informes generados</h2>
+      <button class="btn btn-generar" id="btnGenerar">Generar informe de hoy</button>
+      <div class="estado" id="estadoGen"></div>
+      <div class="lista" id="listaPdf"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Enviar</h2>
+      <div class="fila-nums" id="infoEnvio">Selecciona un informe y pulsa Enviar.</div>
+      <button class="btn btn-enviar" id="btnEnviar" style="margin-top:10px">Enviar informe seleccionado</button>
+      <div class="estado" id="estadoEnvio"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Lista de envío</h2>
+      <p class="avisos" style="margin:0 0 8px">Un correo por línea. Se guardan en
+        <code>Contactos Envio Diario.xlsx</code> (duplicados y vacíos se ignoran).</p>
+      <textarea id="contactos" placeholder="correo1@medhesa.es&#10;correo2@medhesa.es"></textarea>
+      <div class="fila-edit">
+        <button class="btn btn-ghost" id="btnGuardar">Guardar lista</button>
+      </div>
+      <div class="estado" id="estadoContactos"></div>
+    </section>
+  </div>
+
+  <section class="panel" style="padding:8px">
+    <iframe id="pdfFrame" title="Vista previa del informe"></iframe>
+  </section>
+</main>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+let seleccionado = null;
+
+async function json(url, opts) {
+  const r = await fetch(url, opts);
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || ("HTTP " + r.status));
+  return d;
+}
+
+function boton(b, on) { b.disabled = !on; }
+
+function cargarPdfs(seleccionarUltimo) {
+  return json("/api/pdfs").then((r) => {
+    const lista = $("listaPdf");
+    lista.innerHTML = "";
+    if (!r.pdfs.length) {
+      lista.innerHTML = '<div class="pdf-item" style="cursor:default">No hay informes todavía.</div>';
+      if (!seleccionado) $("pdfFrame").src = "about:blank";
+      return;
+    }
+    r.pdfs.forEach((p) => {
+      const d = document.createElement("div");
+      d.className = "pdf-item" + (p.nombre === seleccionado ? " sel" : "");
+      const f = document.createElement("div");
+      f.innerHTML = "<b>" + p.fecha + "</b>";
+      const s = document.createElement("small");
+      s.textContent = p.tam_kb + " KB";
+      const c = document.createElement("div");
+      c.appendChild(f); c.appendChild(s);
+      d.appendChild(c);
+      d.onclick = () => seleccionarPdf(p.nombre);
+      lista.appendChild(d);
+    });
+    if (seleccionarUltimo) seleccionarPdf(r.pdfs[0].nombre, false, true);
+    else if (!seleccionado) seleccionarPdf(r.pdfs[0].nombre, false, true);
+  });
+}
+
+function seleccionarPdf(nombre, silencioso, forzar) {
+  if (nombre === seleccionado && !forzar) return;
+  seleccionado = nombre;
+  $("pdfFrame").src = "/pdf/" + encodeURIComponent(nombre);
+  document.querySelectorAll(".pdf-item").forEach((el) => {
+    const b = el.querySelector("b");
+    el.classList.toggle("sel", b && b.textContent === (nombre.match(/\d{2}\.\d{2}\.\d{4}/) || [""])[0]);
+  });
+  if (!silencioso) {
+    const m = (nombre.match(/\d{2}\.\d{2}\.\d{4}/) || [""])[0];
+    $("infoEnvio").textContent = "Se enviará \"" + (m || nombre) + "\" a los destinatarios de la lista.";
+    $("estadoEnvio").textContent = "";
+  }
+}
+
+async function generar() {
+  const b = $("btnGenerar"), e = $("estadoGen");
+  boton(b, false);
+  e.classList.remove("error", "ok");
+  e.innerHTML = '<span class="spinner"></span>Generando informe de hoy (descarga de datos, gráficos y PDF)...';
+  try {
+    const r = await json("/api/generar", { method: "POST" });
+    e.classList.add("ok");
+    e.textContent = "Informe generado: " + r.pdf;
+    await cargarPdfs(true);
+    seleccionado = r.pdf;
+    $("pdfFrame").src = "/pdf/" + encodeURIComponent(r.pdf);
+    seleccionarPdf(r.pdf, true, true);
+  } catch (err) {
+    e.classList.add("error");
+    e.textContent = err.message;
+  } finally {
+    boton(b, true);
+  }
+}
+
+async function enviar() {
+  if (!seleccionado) return;
+  const b = $("btnEnviar"), e = $("estadoEnvio");
+  boton(b, false);
+  e.classList.remove("error", "ok");
+  e.innerHTML = '<span class="spinner"></span>Enviando...';
+  try {
+    const r = await json("/api/enviar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pdf: seleccionado }),
+    });
+    e.classList.add("ok");
+    e.textContent = "Enviado a " + r.enviados + " destinatario(s): " + r.contactos.join(", ");
+  } catch (err) {
+    e.classList.add("error");
+    e.textContent = err.message;
+  } finally {
+    boton(b, true);
+  }
+}
+
+async function guardarContactos() {
+  const b = $("btnGuardar"), e = $("estadoContactos");
+  boton(b, false);
+  e.classList.remove("error", "ok");
+  const lineas = $("contactos").value.split("\n").map((l) => l.trim());
+  try {
+    const r = await json("/api/contactos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emails: lineas }),
+    });
+    e.classList.add("ok");
+    $("contactos").value = r.contactos.join("\n");
+    e.textContent = "Guardados " + r.contactos.length + " destinatario(s).";
+  } catch (err) {
+    e.classList.add("error");
+    e.textContent = err.message;
+  } finally {
+    boton(b, true);
+  }
+}
+
+async function cargarContactos() {
+  try {
+    const r = await json("/api/contactos");
+    $("contactos").value = r.contactos.join("\n");
+  } catch (err) {
+    $("estadoContactos").classList.add("error");
+    $("estadoContactos").textContent = err.message;
+  }
+}
+
+$("btnGenerar").onclick = generar;
+$("btnEnviar").onclick = enviar;
+$("btnGuardar").onclick = guardarContactos;
+
+(async () => {
+  $("cabecera-info").textContent = new Date().toLocaleString("es-ES", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+  await Promise.all([cargarPdfs(true), cargarContactos()]);
+})();
+</script>
+</body>
+</html>

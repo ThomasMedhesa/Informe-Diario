@@ -6,4 +6,5 @@ plotly>=6.1
 kaleido>=1
 beautifulsoup4>=4.12
 lxml>=5.0
+flask>=3
 pywin32>=306; sys_platform == "win32"

@@ -11,9 +11,8 @@ import urllib.parse
 from datetime import datetime
 from pathlib import Path
 
-import openpyxl
-
 import config
+from modulos.contactos import leer_contactos  # noqa: F401 (re-export)
 
 log = logging.getLogger(__name__)
 
@@ -26,28 +25,6 @@ def _normalizar_correo(valor):
     if not texto:
         return None
     return texto.lower()
-
-
-def leer_contactos():
-    """Lee los correos de la hoja de contactos (columna B desde la fila 5)."""
-    ruta = config.CONTACTOS_XLSX
-    if not ruta.exists():
-        log.warning("No existe %s, no hay destinatarios", ruta.name)
-        return []
-
-    wb = openpyxl.load_workbook(ruta, read_only=True, data_only=True)
-    ws = wb[config.CONTACTOS_HOJA]
-
-    contactos = []
-    for fila in ws.iter_rows(min_row=config.CONTACTOS_FILA_INICIO,
-                             max_col=config.CONTACTOS_COL):
-        correo = _normalizar_correo(fila[config.CONTACTOS_COL - 1].value)
-        if correo and correo not in contactos:
-            contactos.append(correo)
-
-    wb.close()
-    log.info("Destinatarios (%d): %s", len(contactos), ", ".join(contactos))
-    return contactos
 
 
 def _imagenes_locales(html):
