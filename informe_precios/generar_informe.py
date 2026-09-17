@@ -6,10 +6,13 @@ Uso:
 """
 
 import argparse
+import json
 import logging
 import os
 import sys
+from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 
@@ -31,6 +34,16 @@ logging.basicConfig(
 log = logging.getLogger("informe")
 
 
+@dataclass
+class Resultado:
+    """Resultado de una generación: PDF, campos faltantes y estado del envío."""
+    pdf: object
+    faltan: list
+    enviado: bool
+    motivo: str
+    fecha_hoy: object
+
+
 def _leer_historico(csv):
     if csv.exists() and csv.stat().st_size > 0:
         return pd.read_csv(csv, parse_dates=["fecha"])
@@ -49,11 +62,78 @@ def _actuales_desde_historico(hist, contratos):
     return salida
 
 
-def ejecutar(fecha=None, enviar=False):
+def _faltantes_contratos(contratos, actuales):
+    """Faltantes de una tabla de futuros (un ítem por contrato sin precio)."""
+    faltan = []
+    for (etiqueta, precio), (_, _, col) in zip(actuales, contratos):
+        if precio is None:
+            faltan.append({"clave": col, "nombre": etiqueta})
+    return faltan
+
+
+def _datos_faltantes(precio_omie, precio_mibgas, futuros_elec, futuros_gas):
+    """Devuelve la lista de datos imprescindibles que faltan para el envío.
+
+    Cualquier valor ausente (precio OMIE, MIBGAS o un contrato de futuros
+    concreto) bloquea el envío automático del informe.
+    """
+    faltan = []
+    if precio_omie is None:
+        faltan.append({"clave": "omie", "nombre": "Precio medio OMIE (mañana)"})
+    if precio_mibgas is None:
+        faltan.append({"clave": "mibgas", "nombre": "Precio MIBGAS (hoy)"})
+    faltan += _faltantes_contratos(config.CONTRATOS_ELEC, futuros_elec)
+    faltan += _faltantes_contratos(config.CONTRATOS_GAS, futuros_gas)
+    return faltan
+
+
+def _override_num(manual, clave, actual):
+    """Sustituye un valor KPI por el manual si viene bien formado."""
+    if clave not in manual or manual[clave] in (None, ""):
+        return actual
+    return float(manual[clave])
+
+
+def _resumen_manual(manual):
+    """Texto breve de los datos manuales aplicados (para el log)."""
+    futuros = manual.get("futuros") or {}
+    partes = [k for k in ("precio_omie", "precio_mibgas") if manual.get(k)]
+    partes += [f"{k}={v}" for k, v in futuros.items()]
+    return ", ".join(partes) or "ninguno"
+
+
+def _escribir_estado(fecha_hoy, resultado):
+    """Guarda en salida/ultimo_estado.json el estado de la última ejecución.
+
+    La web lo lee para mostrar la alerta si el envío automático quedó
+    bloqueado por datos incompletos.
+    """
+    try:
+        config.ULTIMO_ESTADO_JSON.write_text(
+            json.dumps({
+                "fecha": f"{fecha_hoy:%Y-%m-%d}",
+                "fecha_entrega": f"{(fecha_hoy + pd.Timedelta(days=1)):%Y-%m-%d}",
+                "pdf": Path(str(resultado.pdf)).name,
+                "enviado": resultado.enviado,
+                "motivo": resultado.motivo,
+                "faltan": resultado.faltan,
+            }, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    except Exception:  # noqa: BLE001
+        log.exception("No se pudo escribir el estado de la ejecución")
+
+
+def ejecutar(fecha=None, enviar=False, manual=None):
     """Genera el informe y (si ``enviar``) lo manda por correo.
 
-    Devuelve la ruta del PDF generado. Con ``enviar=False`` (usado por la
-    interfaz web y --no-enviar) solo se genera el PDF para revisión.
+    ``manual`` es un dict opcional con valores introducidos a mano cuando
+    faltan datos: {"precio_omie": float, "precio_mibgas": float,
+    "futuros": {codigo_columna: float}}. Se aplica solo a esta generación.
+
+    Devuelve un ``Resultado`` con el PDF generado, la lista de datos
+    faltantes y si el envío se realizó. Si faltan datos, el envío se bloquea
+    (no se manda) y se registra la alerta.
     """
     config.asegurar_dirs()
 
@@ -127,6 +207,26 @@ def ejecutar(fecha=None, enviar=False):
     futuros_elec = _actuales_desde_historico(hist_elec, config.CONTRATOS_ELEC)
     futuros_gas = _actuales_desde_historico(hist_gas, config.CONTRATOS_GAS)
 
+    # 3b) Datos manuales (solo si el operador los introduce en la web)
+    if manual:
+        precio_omie = _override_num(manual, "precio_omie", precio_omie)
+        precio_mibgas = _override_num(manual, "precio_mibgas", precio_mibgas)
+        futuros_manual = manual.get("futuros") or {}
+        futuros_elec = [
+            (et, futuros_manual.get(col, precio))
+            for (et, precio), (_, _, col)
+            in zip(futuros_elec, config.CONTRATOS_ELEC)
+        ]
+        futuros_gas = [
+            (et, futuros_manual.get(col, precio))
+            for (et, precio), (_, _, col)
+            in zip(futuros_gas, config.CONTRATOS_GAS)
+        ]
+        log.info("Datos manuales aplicados: %s", _resumen_manual(manual))
+
+    # 3c) Control de calidad: datos imprescindibles presentes
+    faltan = _datos_faltantes(precio_omie, precio_mibgas, futuros_elec, futuros_gas)
+
     # 4) Gráficos
     carpeta = config.DATOS_DIR
     grafico_horario = graficos.grafico_horario_omie(hist_omie, fecha_entrega) \
@@ -156,24 +256,60 @@ def ejecutar(fecha=None, enviar=False):
     log.info("=== Informe completado: %s ===", destino)
 
     # 6) Envío por correo (solo si se pide explícitamente)
+    enviado = False
+    motivo = "sin_datos" if faltan else ""
     if not enviar:
+        motivo = "solo_generacion"
         log.info("Envío desactivado: solo generación (revisión previa)")
+    elif faltan:
+        nombres = ", ".join(f["nombre"] for f in faltan)
+        log.warning("Datos incompletos, NO se envía el informe. Faltan: %s", nombres)
+        if os.name == "nt" and enviar_correo.es_dia_laborable():
+            try:
+                enviar_correo.enviar_alerta_datos_faltantes(fecha_hoy, faltan)
+                motivo = "bloqueado_por_datos"
+            except Exception as e:  # noqa: BLE001
+                log.exception("No se pudo enviar la alerta de datos incompletos")
     elif not enviar_correo.es_dia_laborable():
+        motivo = "no_laborable"
         log.info("Hoy no es día laborable (lunes a viernes), se omite el envío")
     elif os.name != "nt":
+        motivo = "no_windows"
         log.info("Plataforma no Windows, se omite el envío vía Outlook")
     else:
         contactos = enviar_correo.leer_contactos()
         if not contactos:
+            motivo = "sin_contactos"
             log.warning("Sin destinatarios, se omite el envío")
         else:
             enviados = enviar_correo.enviar_informe(destino, contactos)
+            enviado = True
+            motivo = "ok"
             log.info("Informe enviado a %d destinatarios", enviados)
 
-    return destino
+    resultado = Resultado(pdf=destino, faltan=faltan, enviado=enviado,
+                          motivo=motivo, fecha_hoy=fecha_hoy)
+    _escribir_estado(fecha_hoy, resultado)
+    return resultado
+
+
+def _activar_log_archivo():
+    if _activar_log_archivo.hecho:
+        return
+    _activar_log_archivo.hecho = True
+    ruta = config.SALIDA_DIR / "generar_informe.log"
+    fh = logging.FileHandler(ruta, encoding="utf-8", delay=True)
+    fh.setFormatter(logging.Formatter(
+        "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"))
+    logging.getLogger().addHandler(fh)
+    log.info("Log de ejecución: %s", ruta)
+
+
+_activar_log_archivo.hecho = False
 
 
 def main():
+    _activar_log_archivo()
     parser = argparse.ArgumentParser(description="Genera el informe diario de precios")
     parser.add_argument("--fecha", type=str, default=None,
                         help="Fecha 'hoy' en formato YYYY-MM-DD (por defecto: hoy)")
@@ -183,7 +319,11 @@ def main():
                         help="Genera el PDF sin enviarlo por correo")
     args = parser.parse_args()
 
-    ejecutar(args.fecha, args.enviar)
+    resultado = ejecutar(args.fecha, args.enviar, None)
+    if resultado.faltan:
+        log.warning("Informe generado con %d datos faltantes; envío: %s.",
+                    len(resultado.faltan),
+                    "enviado" if resultado.enviado else "bloqueado")
     return 0
 
 

@@ -129,6 +129,19 @@ NOMBRE_FIRMA = "Atenci\u00f3n al Cliente (atencionalcliente@medhesa.es)"
 FIRMAS_DIR = Path(os.environ["APPDATA"]) / "Microsoft" / "Signatures"
 
 # ---------------------------------------------------------------------------
+# Env\u00edo programado (tarea de Windows creada desde la web)
+# ---------------------------------------------------------------------------
+TAREA_WINDOWS_NOMBRE = "Informe Diario ENVIO"
+HORA_ENVIO = "14:00"
+
+# ---------------------------------------------------------------------------
+# Control de calidad del informe / alertas
+# ---------------------------------------------------------------------------
+ALERTA_DESTINO = "tbrellenthin@medhesa.es"
+ASUNTO_ALERTA = "ALERTA: Informe diario NO enviado (datos incompletos)"
+ULTIMO_ESTADO_JSON = SALIDA_DIR / "ultimo_estado.json"
+
+# ---------------------------------------------------------------------------
 # Utilidades
 # ---------------------------------------------------------------------------
 def asegurar_dirs():

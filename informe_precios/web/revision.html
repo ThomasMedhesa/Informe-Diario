@@ -26,7 +26,7 @@
   header h1 { font-size: 18px; margin: 0; font-weight: 600; }
   header small { opacity: .85; }
   main {
-    display: grid; grid-template-columns: 340px 1fr; gap: 16px;
+    display: grid; grid-template-columns: 380px 1fr; gap: 16px;
     padding: 16px 24px; max-width: 1500px; margin: 0 auto;
   }
   section.panel {
@@ -60,16 +60,69 @@
     width: 100%; min-height: 110px; border: 1px solid var(--borde); border-radius: 6px;
     padding: 10px; font-family: Consolas, monospace; font-size: 13px; resize: vertical;
   }
-  .fila-edit { display: flex; gap: 8px; margin-top: 10px; }
+  .fila-edit { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+  .fila-edit .btn { width: auto; }
   .avisos { font-size: 12px; color: var(--gris); margin-top: 8px; line-height: 1.5; }
   .fila-nums { font-size: 13px; color: var(--gris); margin-top: 10px; }
+  input[type="text"], input[type="time"] {
+    border: 1px solid var(--borde); border-radius: 6px; padding: 9px 10px;
+    font-size: 13px; width: 100%;
+  }
+  .contacto-item {
+    padding: 7px 12px; border-bottom: 1px solid #eef1f2;
+    display: flex; align-items: center; gap: 10px; font-size: 13px;
+  }
+  .contacto-item:last-child { border-bottom: none; }
+  .contacto-item .num { color: var(--gris); min-width: 28px; font-size: 12px; }
+  .contacto-item .correo { flex: 1; word-break: break-all; }
+  .contacto-item .del {
+    border: none; background: none; color: var(--gris); cursor: pointer;
+    font-size: 14px; padding: 2px 6px; border-radius: 4px;
+  }
+  .contacto-item .del:hover { color: var(--rojo); background: #fdf0ef; }
+  #tablaContactos { max-height: 300px; }
+  .fila-check { display: flex; align-items: center; gap: 8px; font-size: 13px; margin: 4px 0 10px; }
+  .fila-check input { width: auto; }
+  details { margin-top: 10px; }
+  details summary { font-size: 13px; color: var(--azul-c); cursor: pointer; margin-bottom: 6px; }
+  details .btn { margin-top: 8px; }
+  .ancho-auto { width: auto !important; }
   .spinner {
     display: inline-block; width: 14px; height: 14px; border: 2px solid #fff;
     border-top-color: transparent; border-radius: 50%; animation: giro .7s linear infinite;
     vertical-align: -2px; margin-right: 6px;
   }
+  .spinner-gris { border-color: var(--gris); border-top-color: transparent; }
   @keyframes giro { to { transform: rotate(360deg); } }
   .oculto { display: none !important; }
+  .alerta {
+    background: #fdf0ef; border: 1px solid #e6b0aa; border-left: 5px solid var(--rojo);
+    color: #78281f; padding: 10px 16px; margin: 12px 24px 0; border-radius: 8px;
+    font-size: 13px; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; line-height: 1.5;
+  }
+  .alerta button {
+    border: none; background: var(--rojo); color: #fff; padding: 8px 12px;
+    border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap;
+  }
+  .alerta button:hover { background: #943126; }
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    display: flex; align-items: center; justify-content: center; z-index: 50;
+  }
+  .modal {
+    background: #fff; border-radius: 10px; padding: 20px;
+    width: min(560px, 92vw); max-height: 90vh; overflow: auto;
+  }
+  .modal h3 { margin: 0 0 6px; color: var(--azul); font-size: 16px; }
+  .seccion-manual {
+    font-size: 12px; font-weight: 700; color: var(--gris);
+    text-transform: uppercase; margin: 12px 0 4px; border-top: 1px solid var(--borde);
+    padding-top: 8px;
+  }
+  .campo-manual { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-size: 13px; }
+  .campo-manual label { flex: 1; }
+  .campo-manual input { width: 130px; text-align: right; }
 </style>
 </head>
 <body>
@@ -77,6 +130,8 @@
   <h1>Informe diario de precios energéticos — Revisión y envío</h1>
   <small id="cabecera-info"></small>
 </header>
+
+<div id="alertaFaltantes" class="oculto alerta"></div>
 
 <main>
   <div class="col-izq">
@@ -96,13 +151,43 @@
 
     <section class="panel">
       <h2>Lista de envío</h2>
-      <p class="avisos" style="margin:0 0 8px">Un correo por línea. Se guardan en
-        <code>Contactos Envio Diario.xlsx</code> (duplicados y vacíos se ignoran).</p>
-      <textarea id="contactos" placeholder="correo1@medhesa.es&#10;correo2@medhesa.es"></textarea>
+      <div class="fila-nums" id="infoContactos" style="margin-top:0">0 contactos</div>
       <div class="fila-edit">
-        <button class="btn btn-ghost" id="btnGuardar">Guardar lista</button>
+        <input type="text" id="buscarContacto" placeholder="Buscar en la lista..." autocomplete="off">
+      </div>
+      <div class="lista" id="tablaContactos"></div>
+      <div class="fila-edit">
+        <input type="text" id="nuevoContacto" placeholder="correo@medhesa.es" autocomplete="off">
+        <button class="btn btn-ghost" id="btnAnadir">Añadir</button>
+      </div>
+      <details id="detalleMasivos">
+        <summary>Añadir varios / pegar lista</summary>
+        <p class="avisos" style="margin:0 0 8px">Un correo por línea. Vacíos, duplicados e inválidos se ignoran.</p>
+        <textarea id="masivos" placeholder="correo1@medhesa.es&#10;correo2@medhesa.es"></textarea>
+        <button class="btn btn-ghost" id="btnAnadirVarios">Añadir varios</button>
+      </details>
+      <div class="fila-edit">
+        <button class="btn btn-ghost" id="btnExportar">Exportar Excel</button>
+        <button class="btn btn-ghost" id="btnImportar">Importar Excel</button>
+        <input type="file" id="archivoImportar" accept=".xlsx,.xlsm,.csv" class="oculto">
       </div>
       <div class="estado" id="estadoContactos"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Envío programado</h2>
+      <p class="avisos" style="margin:0 0 8px">Crea una tarea de Windows que genera y envía el informe a diario a la hora indicada (entre semana).</p>
+      <label class="fila-check">
+        <input type="checkbox" id="progHab">
+        <span>Activar envío diario automático</span>
+      </label>
+      <div class="fila-edit">
+        <label for="progHora" style="font-size:13px;white-space:nowrap">Hora:</label>
+        <input type="time" id="progHora" value="14:00" class="ancho-auto" style="width:110px">
+      </div>
+      <button class="btn btn-ghost" id="btnGuardarProg">Guardar programación</button>
+      <div class="estado" id="estadoProg"></div>
+      <div class="avisos" id="infoProg" style="margin-top:4px"></div>
     </section>
   </div>
 
@@ -111,10 +196,29 @@
   </section>
 </main>
 
+<div id="modalManual" class="oculto">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Completar datos manualmente</h3>
+      <p class="avisos" style="margin:0 0 8px">Rellena solo los campos que faltan
+        (números en €/MWh). Se aplicarán al regenerar el informe, solo para esta
+        generación.</p>
+      <div id="camposManual"></div>
+      <div class="fila-edit" style="margin-top:14px">
+        <button class="btn btn-ghost" id="btnManualCancelar">Cancelar</button>
+        <button class="btn btn-generar" id="btnManualGuardar">Regenerar con datos manuales</button>
+      </div>
+      <div class="estado" id="estadoManual"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 "use strict";
 const $ = (id) => document.getElementById(id);
 let seleccionado = null;
+let contactos = [];
+let faltanActual = [];
 
 async function json(url, opts) {
   const r = await fetch(url, opts);
@@ -124,6 +228,13 @@ async function json(url, opts) {
 }
 
 function boton(b, on) { b.disabled = !on; }
+
+function setEstado(id, msg, tipo) {
+  const e = $(id);
+  e.classList.remove("error", "ok");
+  if (tipo) e.classList.add(tipo);
+  e.textContent = msg;
+}
 
 function cargarPdfs(seleccionarUltimo) {
   return json("/api/pdfs").then((r) => {
@@ -174,8 +285,18 @@ async function generar() {
   e.innerHTML = '<span class="spinner"></span>Generando informe de hoy (descarga de datos, gráficos y PDF)...';
   try {
     const r = await json("/api/generar", { method: "POST" });
-    e.classList.add("ok");
-    e.textContent = "Informe generado: " + r.pdf;
+    const faltan = r.faltan || [];
+    faltanActual = faltan;
+    if (faltan.length) {
+      e.classList.add("error");
+      e.textContent = "Informe generado (" + r.pdf + ") pero con datos incompletos. " +
+        "Completa los datos manualmente antes de enviar.";
+      mostrarAlertaFaltantes(faltan);
+    } else {
+      e.classList.add("ok");
+      e.textContent = "Informe generado: " + r.pdf;
+      ocultarAlerta();
+    }
     await cargarPdfs(true);
     seleccionado = r.pdf;
     $("pdfFrame").src = "/pdf/" + encodeURIComponent(r.pdf);
@@ -201,7 +322,9 @@ async function enviar() {
       body: JSON.stringify({ pdf: seleccionado }),
     });
     e.classList.add("ok");
-    e.textContent = "Enviado a " + r.enviados + " destinatario(s): " + r.contactos.join(", ");
+    e.textContent = "Enviado a " + r.enviados + " destinatario(s)." +
+      (faltanActual.length ? " Aviso: el informe se envió con algunos datos incompletos." : "");
+    ocultarAlerta();
   } catch (err) {
     e.classList.add("error");
     e.textContent = err.message;
@@ -210,47 +333,332 @@ async function enviar() {
   }
 }
 
-async function guardarContactos() {
-  const b = $("btnGuardar"), e = $("estadoContactos");
-  boton(b, false);
-  e.classList.remove("error", "ok");
-  const lineas = $("contactos").value.split("\n").map((l) => l.trim());
-  try {
-    const r = await json("/api/contactos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ emails: lineas }),
-    });
-    e.classList.add("ok");
-    $("contactos").value = r.contactos.join("\n");
-    e.textContent = "Guardados " + r.contactos.length + " destinatario(s).";
-  } catch (err) {
-    e.classList.add("error");
-    e.textContent = err.message;
-  } finally {
-    boton(b, true);
+function filtroActual() {
+  return $("buscarContacto").value.trim().toLowerCase();
+}
+
+function renderContactos() {
+  const lista = $("tablaContactos");
+  const q = filtroActual();
+  const visibles = q ? contactos.filter((c) => c.includes(q)) : contactos;
+  $("infoContactos").textContent =
+    contactos.length + " contactos" + (q ? " · mostrando " + visibles.length : "");
+  lista.innerHTML = "";
+  if (!visibles.length) {
+    lista.innerHTML = '<div class="contacto-item">' +
+      (contactos.length ? "Sin coincidencias." : "La lista está vacía.") + "</div>";
+    return;
   }
+  visibles.forEach((c) => {
+    const d = document.createElement("div");
+    d.className = "contacto-item";
+    const num = document.createElement("span");
+    num.className = "num";
+    num.textContent = String(contactos.indexOf(c) + 1);
+    const correo = document.createElement("span");
+    correo.className = "correo";
+    correo.textContent = c;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "del";
+    btn.title = "Quitar de la lista";
+    btn.textContent = "✕";
+    btn.onclick = () => eliminarContacto(c);
+    d.appendChild(num); d.appendChild(correo); d.appendChild(btn);
+    lista.appendChild(d);
+  });
 }
 
 async function cargarContactos() {
   try {
     const r = await json("/api/contactos");
-    $("contactos").value = r.contactos.join("\n");
+    contactos = r.contactos;
+    renderContactos();
+    $("estadoContactos").classList.remove("error");
   } catch (err) {
-    $("estadoContactos").classList.add("error");
-    $("estadoContactos").textContent = err.message;
+    setEstado("estadoContactos", err.message, "error");
   }
+}
+
+async function anadirContacto() {
+  const input = $("nuevoContacto");
+  const valor = input.value.trim();
+  if (!valor) return;
+  const b = $("btnAnadir");
+  boton(b, false);
+  try {
+    const r = await json("/api/contactos/anadir", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emails: [valor] }),
+    });
+    contactos = r.contactos;
+    renderContactos();
+    input.value = "";
+    setEstado("estadoContactos", "Añadido. Total: " + r.contactos.length + " contactos.", "ok");
+  } catch (err) {
+    setEstado("estadoContactos", err.message, "error");
+  } finally {
+    boton(b, true);
+  }
+}
+
+async function anadirVarios() {
+  const area = $("masivos");
+  const lineas = area.value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lineas.length) return;
+  const b = $("btnAnadirVarios");
+  const antes = contactos.length;
+  boton(b, false);
+  try {
+    const r = await json("/api/contactos/anadir", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emails: lineas }),
+    });
+    contactos = r.contactos;
+    renderContactos();
+    area.value = "";
+    setEstado("estadoContactos",
+      "Añadidos " + (r.contactos.length - antes) + " · Total: " + r.contactos.length + " contactos.", "ok");
+  } catch (err) {
+    setEstado("estadoContactos", err.message, "error");
+  } finally {
+    boton(b, true);
+  }
+}
+
+async function eliminarContacto(correo) {
+  if (!confirm("¿Quitar \"" + correo + "\" de la lista de envío?")) return;
+  try {
+    const r = await json("/api/contactos/eliminar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emails: [correo] }),
+    });
+    contactos = r.contactos;
+    renderContactos();
+    setEstado("estadoContactos", "Eliminado. Total: " + r.contactos.length + " contactos.", "ok");
+  } catch (err) {
+    setEstado("estadoContactos", err.message, "error");
+  }
+}
+
+function exportarContactos() {
+  window.location.href = "/api/contactos/exportar";
+}
+
+async function subirImportacion(archivo) {
+  const e = $("estadoContactos");
+  e.classList.remove("error", "ok");
+  e.innerHTML = '<span class="spinner spinner-gris"></span>Importando ' + archivo.name + '...';
+  const fd = new FormData();
+  fd.append("archivo", archivo);
+  try {
+    const r = await json("/api/contactos/importar", { method: "POST", body: fd });
+    contactos = r.contactos;
+    renderContactos();
+    e.classList.add("ok");
+    e.textContent = "Importados " + r.importados + " correo(s) del archivo (duplicados omitidos). Total: " + r.contactos.length + ".";
+  } catch (err) {
+    e.classList.add("error");
+    e.textContent = err.message;
+  }
+}
+
+async function cargarProgramacion() {
+  try {
+    const r = await json("/api/programacion");
+    $("progHora").value = r.hora || "14:00";
+    $("progHab").checked = !!r.habilitado;
+    actualizarInfoProg(r.tarea);
+  } catch (err) {
+    setEstado("estadoProg", err.message, "error");
+  }
+}
+
+function actualizarInfoProg(tarea) {
+  const t = tarea || null;
+  if ($("progHab").checked) {
+    const prox = t && t.proxima && t.proxima.toLowerCase() !== "n/a"
+      ? "Próxima ejecución: " + t.proxima : "";
+    $("infoProg").textContent =
+      (prox || (t && t.estado ? "Estado: " + t.estado : "")) || "Tarea programada activada.";
+  } else {
+    $("infoProg").textContent = "Envío automático desactivado.";
+  }
+}
+
+async function guardarProgramacion() {
+  const b = $("btnGuardarProg"), e = $("estadoProg");
+  boton(b, false);
+  e.classList.remove("error", "ok");
+  e.textContent = "Guardando...";
+  try {
+    const r = await json("/api/programacion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ habilitado: $("progHab").checked, hora: $("progHora").value }),
+    });
+    $("progHora").value = r.hora || "14:00";
+    $("progHab").checked = !!r.habilitado;
+    actualizarInfoProg(r.tarea);
+    e.classList.add("ok");
+    e.textContent = "Programación guardada.";
+  } catch (err) {
+    e.classList.add("error");
+    e.textContent = err.message;
+  } finally {
+    boton(b, true);
+  }
+}
+
+function mostrarAlertaFaltantes(faltan, contexto) {
+  const a = $("alertaFaltantes");
+  a.classList.remove("oculto");
+  const lista = faltan.map((f) => "<b>" + f.nombre + "</b>").join(", ");
+  a.innerHTML = (contexto || "") + "Faltan datos para el envío: " + lista +
+    ' <button type="button" id="btnAbrirManual">Completar datos manualmente</button>';
+  $("btnAbrirManual").onclick = () => abrirModalManual(faltan);
+}
+
+function ocultarAlerta() {
+  const a = $("alertaFaltantes");
+  a.classList.add("oculto");
+  a.innerHTML = "";
+}
+
+function abrirModalManual(faltan) {
+  faltanActual = faltan;
+  $("estadoManual").textContent = "";
+  $("estadoManual").classList.remove("error", "ok");
+  const cont = $("camposManual");
+  cont.innerHTML = "";
+
+  const kpis = faltan.filter((f) => f.clave === "omie" || f.clave === "mibgas");
+  const futuros = faltan.filter((f) => f.clave !== "omie" && f.clave !== "mibgas");
+
+  const crearFila = (item) => {
+    const fila = document.createElement("div");
+    fila.className = "campo-manual";
+    const lbl = document.createElement("label");
+    lbl.textContent = item.nombre;
+    const inp = document.createElement("input");
+    inp.type = "number";
+    inp.step = "0.01";
+    inp.min = "0";
+    inp.placeholder = "€/MWh";
+    inp.dataset.clave = item.clave;
+    fila.appendChild(lbl);
+    fila.appendChild(inp);
+    cont.appendChild(fila);
+  };
+
+  if (kpis.length) {
+    const sec = document.createElement("div");
+    sec.className = "seccion-manual";
+    sec.textContent = "Precios de referencia";
+    cont.appendChild(sec);
+  }
+  kpis.forEach(crearFila);
+  if (futuros.length) {
+    const sec = document.createElement("div");
+    sec.className = "seccion-manual";
+    sec.textContent = "Contratos de futuros OMIP";
+    cont.appendChild(sec);
+  }
+  futuros.forEach(crearFila);
+  $("modalManual").classList.remove("oculto");
+}
+
+function cerrarManual() {
+  $("modalManual").classList.add("oculto");
+}
+
+async function guardarManual() {
+  const manual = { futuros: {} };
+  let hayDatos = false;
+  document.querySelectorAll("#camposManual input").forEach((inp) => {
+    const valor = inp.value.trim();
+    if (!valor) return;
+    const clave = inp.dataset.clave;
+    if (clave === "omie") { manual.precio_omie = valor; hayDatos = true; }
+    else if (clave === "mibgas") { manual.precio_mibgas = valor; hayDatos = true; }
+    else { manual.futuros[clave] = valor; hayDatos = true; }
+  });
+  if (!hayDatos) {
+    setEstado("estadoManual", "Indica al menos un dato para continuar.", "error");
+    return;
+  }
+  const b = $("btnManualGuardar");
+  boton(b, false);
+  const e = $("estadoGen");
+  e.classList.remove("error", "ok");
+  e.innerHTML = '<span class="spinner"></span>Regenerando informe con los datos manuales...';
+  try {
+    const r = await json("/api/generar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ manual: manual }),
+    });
+    faltanActual = r.faltan || [];
+    seleccionado = r.pdf;
+    $("pdfFrame").src = "/pdf/" + encodeURIComponent(r.pdf);
+    await cargarPdfs(true);
+    seleccionarPdf(r.pdf, true, true);
+    cerrarManual();
+    if (faltanActual.length) {
+      e.classList.add("error");
+      e.textContent = "Siguen faltando datos: " + faltanActual.map((f) => f.nombre).join(", ");
+      mostrarAlertaFaltantes(faltanActual);
+    } else {
+      e.classList.add("ok");
+      e.textContent = "Informe regenerado con datos manuales: " + r.pdf + ". Listo para enviar.";
+      ocultarAlerta();
+    }
+  } catch (err) {
+    setEstado("estadoManual", err.message, "error");
+  } finally {
+    boton(b, true);
+  }
+}
+
+async function cargarEstado() {
+  try {
+    const r = await json("/api/estado");
+    const st = r.estado;
+    if (st && st.faltan && st.faltan.length) {
+      faltanActual = st.faltan;
+      const fecha = st.fecha || "";
+      const ctx = st.enviado ? ""
+        : "El envío automático del " + fecha + " no se realizó por datos incompletos. ";
+      mostrarAlertaFaltantes(st.faltan, ctx);
+    }
+  } catch (err) { /* silencioso: la alerta se mostrará al generar */ }
 }
 
 $("btnGenerar").onclick = generar;
 $("btnEnviar").onclick = enviar;
-$("btnGuardar").onclick = guardarContactos;
+$("btnManualGuardar").onclick = guardarManual;
+$("btnManualCancelar").onclick = cerrarManual;
+$("btnAnadir").onclick = anadirContacto;
+$("nuevoContacto").addEventListener("keydown", (ev) => { if (ev.key === "Enter") anadirContacto(); });
+$("btnAnadirVarios").onclick = anadirVarios;
+$("buscarContacto").addEventListener("input", renderContactos);
+$("btnExportar").onclick = exportarContactos;
+$("btnImportar").onclick = () => $("archivoImportar").click();
+$("archivoImportar").addEventListener("change", () => {
+  const f = $("archivoImportar").files[0];
+  if (f) subirImportacion(f);
+  $("archivoImportar").value = "";
+});
+$("btnGuardarProg").onclick = guardarProgramacion;
 
 (async () => {
   $("cabecera-info").textContent = new Date().toLocaleString("es-ES", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
-  await Promise.all([cargarPdfs(true), cargarContactos()]);
+  await Promise.all([cargarPdfs(true), cargarContactos(), cargarProgramacion(), cargarEstado()]);
 })();
 </script>
 </body>

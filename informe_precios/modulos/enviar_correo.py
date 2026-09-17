@@ -116,6 +116,44 @@ def es_dia_laborable():
     return datetime.today().weekday() < 5
 
 
+def enviar_alerta_datos_faltantes(fecha_hoy, faltan):
+    """Envía un correo de aviso interno cuando el informe no se envió por
+    tener datos incompletos. Devuelve True si se envió."""
+    import win32com.client  # import tardío: solo en Windows con Outlook
+
+    lineas = "<br>".join(f"&bull; <b>{f['nombre']}</b>" for f in faltan)
+    cuerpo = (
+        "<p>El informe del d\u00eda <b>{fecha:%d/%m/%Y}</b> NO se ha enviado "
+        "autom\u00e1ticamente porque faltan datos:</p>"
+        "<p>{lineas}</p>"
+        "<p>Completa los datos manualmente desde la aplicaci\u00f3n web y "
+        "env\u00eda el informe.</p>"
+    ).format(fecha=fecha_hoy, lineas=lineas)
+
+    app = win32com.client.Dispatch("Outlook.Application")
+    ns = app.GetNamespace("MAPI")
+
+    cuenta = None
+    for acc in ns.Accounts:
+        if acc.SmtpAddress.lower() == config.CUENTA_ENVIO.lower():
+            cuenta = acc
+            break
+    if cuenta is None:
+        log.warning("Cuenta %s no encontrada, se usará la cuenta por defecto",
+                    config.CUENTA_ENVIO)
+
+    mail = app.CreateItem(0)  # 0 = olMailItem
+    if cuenta is not None:
+        mail.SendUsingAccount = cuenta
+    mail.To = config.ALERTA_DESTINO
+    mail.Subject = config.ASUNTO_ALERTA
+    mail.HTMLBody = cuerpo
+    mail.Send()
+    log.info("Alerta enviada a %s (%d faltantes)",
+             config.ALERTA_DESTINO, len(faltan))
+    return True
+
+
 def enviar_informe(pdf, contactos):
     """Envía el PDF adjunto a cada destinatario con la cuenta configurada."""
     import win32com.client  # import tardío: solo en Windows con Outlook
