@@ -129,7 +129,12 @@ CONTACTOS_FILA_INICIO = 5
 
 CUENTA_ENVIO = "atencionalcliente@medhesa.es"
 ASUNTO = "Informe Precio Mercados Energ\u00e9ticos"
-CUERPO = "Adjuntamos informe de precios de mercados energ\u00e9ticos de hoy (de aplicaci\u00f3n para ma\u00f1ana)."
+CUERPO = (
+    '<span style="font-family:Calibri; font-size:11pt; color:#002060;">'
+    "Adjuntamos informe de precios de mercados energ\u00e9ticos de hoy "
+    "(de aplicaci\u00f3n para ma\u00f1ana)."
+    '</span>'
+)
 NOMBRE_FIRMA = "Atenci\u00f3n al Cliente (atencionalcliente@medhesa.es)"
 FIRMAS_DIR = Path(os.environ["APPDATA"]) / "Microsoft" / "Signatures"
 
