@@ -9,6 +9,7 @@ Formato (semicolon-separated, primera linea = tipo, ultima = '*'):
 
 import io
 import logging
+import time
 
 import pandas as pd
 import requests
@@ -23,17 +24,41 @@ def _url_dia(ano, mes, dia):
     return f"{config.OMIE_BASE}?parents={config.OMIE_PARENTS}&filename={fname}"
 
 
-def descargar_dia(fecha):
+def descargar_dia(fecha, reintentos=None, espera_seg=None):
     """Devuelve DataFrame con columnas [fecha, hora, precio_es, precio_pt] para `fecha`.
 
     - hora: 1..24 (agrupa los periodos de 15 min en horas)
     - precio_es: precio marginal del sistema espanol (EUR/MWh)
     - precio_pt: precio marginal del sistema portugues (EUR/MWh)
 
-    Lanza requests.HTTPError si no esta disponible.
+    OMIE publica el fichero del día de entrega el día anterior a hora variable;
+    si aún no está disponible (HTTP 404, error de red o archivo vacio), se
+    reintenta ``reintentos`` veces esperando ``espera_seg`` segundos entre ellas.
+    Agotados los reintentos, se propaga el error.
     """
+    if reintentos is None:
+        reintentos = config.OMIE_REINTENTOS
+    if espera_seg is None:
+        espera_seg = config.OMIE_ESPERA_SEG
+
     fecha = pd.Timestamp(fecha).normalize()
     url = _url_dia(fecha.year, fecha.month, fecha.day)
+    total = reintentos + 1
+    for intento in range(1, total + 1):
+        try:
+            return _descargar_dia_intento(fecha, url)
+        except (requests.HTTPError, requests.RequestException, ValueError) as e:
+            if intento >= total:
+                raise
+            log.warning(
+                "OMIE %s no disponible (intento %d/%d): %s. Reintentando en %ds",
+                fecha.date(), intento, total, e, espera_seg,
+            )
+            time.sleep(espera_seg)
+
+
+def _descargar_dia_intento(fecha, url):
+    """Un único intento de descarga y parseo del archivo OMIE."""
     log.info("Descargando OMIE %s (%s)", fecha.date(), url)
     resp = requests.get(url, timeout=60)
     if resp.status_code != 200:
@@ -78,7 +103,7 @@ def acumular(fecha):
 
     try:
         nuevo = descargar_dia(fecha)
-    except (requests.HTTPError, ValueError) as e:
+    except (requests.HTTPError, requests.RequestException, ValueError) as e:
         log.warning("No se acumulo OMIE: %s", e)
         return existente if not existente.empty else None
 

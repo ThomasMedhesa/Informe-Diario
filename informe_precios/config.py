@@ -34,6 +34,11 @@ CSV_MIBGAS = MIBGAS_DIR / "historico_mibgas.csv"
 OMIE_BASE = "https://www.omie.es/en/file-download"
 OMIE_PARENTS = "marginalpdbc"          # file type: precio marginal
 
+# Reintentos de OMIE: el fichero del día siguiente se publica a hora variable
+# (13:20-14:30 aprox.), así que se reintenta tras fallos transitorios.
+OMIE_REINTENTOS = 6                    # intentos adicionales tras el primero
+OMIE_ESPERA_SEG = 600                  # 10 min entre intentos (~60 min total)
+
 OMIP_BASE = "https://www.omip.pt/en/dados-mercado"
 
 MIBGAS_ANUAL_XLSX = (
@@ -132,7 +137,7 @@ FIRMAS_DIR = Path(os.environ["APPDATA"]) / "Microsoft" / "Signatures"
 # Env\u00edo programado (tarea de Windows creada desde la web)
 # ---------------------------------------------------------------------------
 TAREA_WINDOWS_NOMBRE = "Informe Diario ENVIO"
-HORA_ENVIO = "14:00"
+HORA_ENVIO = "14:05"
 
 # ---------------------------------------------------------------------------
 # Control de calidad del informe / alertas

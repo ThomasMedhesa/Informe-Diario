@@ -183,7 +183,7 @@
       </label>
       <div class="fila-edit">
         <label for="progHora" style="font-size:13px;white-space:nowrap">Hora:</label>
-        <input type="time" id="progHora" value="14:00" class="ancho-auto" style="width:110px">
+        <input type="time" id="progHora" value="14:05" class="ancho-auto" style="width:110px">
       </div>
       <button class="btn btn-ghost" id="btnGuardarProg">Guardar programación</button>
       <div class="estado" id="estadoProg"></div>
@@ -469,7 +469,7 @@ async function subirImportacion(archivo) {
 async function cargarProgramacion() {
   try {
     const r = await json("/api/programacion");
-    $("progHora").value = r.hora || "14:00";
+    $("progHora").value = r.hora || "14:05";
     $("progHab").checked = !!r.habilitado;
     actualizarInfoProg(r.tarea);
   } catch (err) {
@@ -500,7 +500,7 @@ async function guardarProgramacion() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ habilitado: $("progHab").checked, hora: $("progHora").value }),
     });
-    $("progHora").value = r.hora || "14:00";
+    $("progHora").value = r.hora || "14:05";
     $("progHab").checked = !!r.habilitado;
     actualizarInfoProg(r.tarea);
     e.classList.add("ok");
