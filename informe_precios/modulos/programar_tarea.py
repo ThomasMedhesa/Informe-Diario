@@ -1,7 +1,7 @@
 """Gestión de la tarea programada de Windows que genera y envía el informe.
 
 La tarea se crea con ``schtasks`` para que se ejecute a diario a una hora
-configurable (por defecto 14:05). Ejecuta ``generar_informe.py`` con
+configurable (por defecto 14:00). Ejecuta ``generar_informe.py`` con
 ``pythonw.exe`` (sin ventana de consola); el propio script ignora sábados y
 domingos y lanza Outlook vía COM con la sesión del usuario.
 """
