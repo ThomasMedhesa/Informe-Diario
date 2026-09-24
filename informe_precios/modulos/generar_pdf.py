@@ -235,7 +235,7 @@ def _portada(historia, estilo, fecha_entrega, fecha_hoy, precio_omie, precio_mib
             dif = precio_mibgas - precio_mibgas_ant
             camb = f" ({_num(dif, 2, signo=True)} \u20ac/MWh vs d\u00eda anterior)"
         historia.append(Paragraph(
-            f"<b>Precio de MIBGAS para ma\u00f1ana ({fecha_entrega:%d/%m/%Y}):</b> "
+            f"<b>Precio de MIBGAS para el d\u00eda de hoy ({fecha_hoy:%d/%m/%Y}):</b> "
             f"<font color='#1e8449'><b>{_fmt(precio_mibgas)} \u20ac/MWh</b></font>{camb}",
             estilo["kpi"],
         ))

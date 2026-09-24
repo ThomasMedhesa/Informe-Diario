@@ -81,7 +81,7 @@ def _datos_faltantes(precio_omie, precio_mibgas, futuros_elec, futuros_gas):
     if precio_omie is None:
         faltan.append({"clave": "omie", "nombre": "Precio medio OMIE (mañana)"})
     if precio_mibgas is None:
-        faltan.append({"clave": "mibgas", "nombre": "Precio MIBGAS (mañana)"})
+        faltan.append({"clave": "mibgas", "nombre": "Precio MIBGAS (hoy)"})
     faltan += _faltantes_contratos(config.CONTRATOS_ELEC, futuros_elec)
     faltan += _faltantes_contratos(config.CONTRATOS_GAS, futuros_gas)
     return faltan
@@ -197,13 +197,12 @@ def ejecutar(fecha=None, enviar=False, manual=None):
     precio_mibgas = None
     precio_mibgas_ant = None
     if hist_mibgas is not None and not hist_mibgas.empty:
-        dia = hist_mibgas[hist_mibgas["fecha"] == pd.Timestamp(fecha_entrega.date())]
-        if not dia.empty:
-            precio_mibgas = round(dia.iloc[0]["precio"], 2)
-            ant = hist_mibgas[hist_mibgas["fecha"] < pd.Timestamp(fecha_entrega.date())]
-            if not ant.empty:
-                precio_mibgas_ant = round(ant["precio"].iloc[-1], 2)
-            log.info("Precio MIBGAS mañana (%s): %s", fecha_entrega.date(), precio_mibgas)
+        h = hist_mibgas[hist_mibgas["fecha"] <= pd.Timestamp(fecha_hoy)].sort_values("fecha")
+        if not h.empty:
+            precio_mibgas = round(h.iloc[-1]["precio"], 2)
+            if len(h) > 1:
+                precio_mibgas_ant = round(h.iloc[-2]["precio"], 2)
+            log.info("Precio MIBGAS hoy (%s): %s", h.iloc[-1]["fecha"].date(), precio_mibgas)
 
     futuros_elec = _actuales_desde_historico(hist_elec, config.CONTRATOS_ELEC)
     futuros_gas = _actuales_desde_historico(hist_gas, config.CONTRATOS_GAS)
