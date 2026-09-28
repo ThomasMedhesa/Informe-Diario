@@ -6,6 +6,11 @@ configurable (por defecto 14:00). Ejecuta ``generar_informe.py`` con
 como ejecutable, el propio ``.exe`` con el parámetro ``--generar``. El propio
 script ignora sábados y domingos y lanza Outlook vía COM con la sesión del
 usuario.
+
+``schtasks /Change`` solo permite cambiar la hora: nunca el programa que
+ejecuta la tarea. Por eso, si el comando guardado no es el que corresponde a
+como se está usando la aplicación, ``configurar()`` recrea la tarea en lugar de
+solo retocarla.
 """
 
 import logging
@@ -54,6 +59,23 @@ def _valor_tr():
     if getattr(sys, "frozen", False):
         return f'"{Path(sys.executable)}" {ARG_GENERAR}'
     return f'"{_ruta_pythonw()}" "{RUTA_SCRIPT}"'
+
+
+def _mismo_comando(actual, deseado):
+    """True si la tarea ya ejecuta el comando deseado.
+
+    Se comparan sin comillas, sin distinguir mayúsculas y con los espacios
+    colapsados, porque ``schtasks /Query`` devuelve el comando tal como lo
+    guardó Windows, que no siempre coincide carácter a carácter con el que se
+    le pasó a ``/Create``.
+    """
+    if not actual:
+        return False
+
+    def normalizar(texto):
+        return re.sub(r"\s+", " ", str(texto).replace('"', "")).strip().lower()
+
+    return normalizar(actual) == normalizar(deseado)
 
 
 def _run(args):
@@ -172,6 +194,8 @@ def estado_tarea():
             datos["proxima"] = v
         elif c in ("start time", "hora de inicio"):
             datos["hora"] = v
+        elif c.startswith("task to run") or c.startswith("tarea que se ejecutar"):
+            datos["comando"] = v
         elif c in ("scheduled task state", "estado de tarea programada",
                    "estado de la tarea programada"):
             datos["estado_tarea"] = v
@@ -185,15 +209,25 @@ def estado_tarea():
 
 
 def configurar(hora, habilitado):
-    """Aplica la configuración deseada creando/actualizando la tarea."""
-    if estado_tarea() is None:
+    """Aplica la configuración deseada creando/actualizando la tarea.
+
+    ``schtasks /Change`` solo cambia la hora, nunca el programa que ejecuta la
+    tarea. Si el comando guardado no es el actual —por ejemplo, al pasar de
+    ``pythonw.exe generar_informe.py`` al ejecutable compilado— la tarea se
+    recrea para que apunte al comando correcto. Así, cambiar la programación
+    desde el .exe deja la tarea preparada para lanzarlo a él.
+    """
+    estado = estado_tarea()
+    if estado is None:
         crear_tarea(hora)
-        if not habilitado:
-            desactivar()
+    elif not _mismo_comando(estado.get("comando"), _valor_tr()):
+        log.info("La tarea no apunta al comando actual; se recrea. Nuevo: %s",
+                 _valor_tr())
+        crear_tarea(hora)
     else:
         cambiar_hora(hora)
-        if habilitado:
-            activar()
-        else:
-            desactivar()
+    if habilitado:
+        activar()
+    else:
+        desactivar()
     return estado_tarea()
