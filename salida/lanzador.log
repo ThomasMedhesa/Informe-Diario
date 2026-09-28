@@ -1,0 +1,128 @@
+2026-09-28 10:30:58,776 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-28 10:31:00,857 | ERROR    | servidor_web | Exception on / [GET]
+Traceback (most recent call last):
+  File "flask\app.py", line 1511, in wsgi_app
+  File "flask\app.py", line 919, in full_dispatch_request
+  File "flask\app.py", line 917, in full_dispatch_request
+  File "flask\app.py", line 902, in dispatch_request
+  File "servidor_web.py", line 77, in inicio
+  File "flask\templating.py", line 150, in render_template
+  File "jinja2\environment.py", line 1087, in get_or_select_template
+  File "jinja2\environment.py", line 1016, in get_template
+  File "jinja2\environment.py", line 975, in _load_template
+  File "jinja2\loaders.py", line 126, in load
+  File "flask\templating.py", line 66, in get_source
+  File "flask\templating.py", line 100, in _get_source_fast
+jinja2.exceptions.TemplateNotFound: revision.html
+2026-09-28 10:31:00,863 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 10:31:00] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2026-09-28 10:31:01,653 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 10:31:01] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-09-28 10:31:22,538 | ERROR    | servidor_web | Exception on / [GET]
+Traceback (most recent call last):
+  File "flask\app.py", line 1511, in wsgi_app
+  File "flask\app.py", line 919, in full_dispatch_request
+  File "flask\app.py", line 917, in full_dispatch_request
+  File "flask\app.py", line 902, in dispatch_request
+  File "servidor_web.py", line 77, in inicio
+  File "flask\templating.py", line 150, in render_template
+  File "jinja2\environment.py", line 1087, in get_or_select_template
+  File "jinja2\environment.py", line 1016, in get_template
+  File "jinja2\environment.py", line 975, in _load_template
+  File "jinja2\loaders.py", line 126, in load
+  File "flask\templating.py", line 66, in get_source
+  File "flask\templating.py", line 100, in _get_source_fast
+jinja2.exceptions.TemplateNotFound: revision.html
+2026-09-28 10:31:22,543 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 10:31:22] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2026-09-28 10:31:22,758 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 10:31:22] "GET /api/estado HTTP/1.1" 200 -
+2026-09-28 10:31:26,834 | ERROR    | servidor_web | Exception on / [GET]
+Traceback (most recent call last):
+  File "flask\app.py", line 1511, in wsgi_app
+  File "flask\app.py", line 919, in full_dispatch_request
+  File "flask\app.py", line 917, in full_dispatch_request
+  File "flask\app.py", line 902, in dispatch_request
+  File "servidor_web.py", line 77, in inicio
+  File "flask\templating.py", line 150, in render_template
+  File "jinja2\environment.py", line 1087, in get_or_select_template
+  File "jinja2\environment.py", line 1016, in get_template
+  File "jinja2\environment.py", line 975, in _load_template
+  File "jinja2\loaders.py", line 126, in load
+  File "flask\templating.py", line 66, in get_source
+  File "flask\templating.py", line 100, in _get_source_fast
+jinja2.exceptions.TemplateNotFound: revision.html
+2026-09-28 10:31:26,840 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 10:31:26] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2026-09-28 10:31:35,273 | ERROR    | servidor_web | Exception on / [GET]
+Traceback (most recent call last):
+  File "flask\app.py", line 1511, in wsgi_app
+  File "flask\app.py", line 919, in full_dispatch_request
+  File "flask\app.py", line 917, in full_dispatch_request
+  File "flask\app.py", line 902, in dispatch_request
+  File "servidor_web.py", line 77, in inicio
+  File "flask\templating.py", line 150, in render_template
+  File "jinja2\environment.py", line 1087, in get_or_select_template
+  File "jinja2\environment.py", line 1016, in get_template
+  File "jinja2\environment.py", line 975, in _load_template
+  File "jinja2\loaders.py", line 126, in load
+  File "flask\templating.py", line 66, in get_source
+  File "flask\templating.py", line 100, in _get_source_fast
+jinja2.exceptions.TemplateNotFound: revision.html
+2026-09-28 10:31:35,279 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 10:31:35] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2026-09-28 11:34:42,483 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-28 11:34:42,990 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:42] "GET / HTTP/1.1" 200 -
+2026-09-28 11:34:43,136 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:43] "GET /api/estado HTTP/1.1" 200 -
+2026-09-28 11:34:43,139 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:43] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-28 11:34:43,158 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-28 11:34:43,159 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:43] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-28 11:34:43,322 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:43] "GET /pdf/Informe%20Precio%20Diario%2025.09.2026.pdf HTTP/1.1" 200 -
+2026-09-28 11:34:43,460 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:43] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-28 11:34:50,212 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:50] "GET / HTTP/1.1" 200 -
+2026-09-28 11:34:50,994 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:50] "GET /api/estado HTTP/1.1" 200 -
+2026-09-28 11:34:51,115 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:34:51] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-28 11:35:01,372 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:35:01] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-28 11:54:05,058 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-28 11:54:05,521 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:05] "GET / HTTP/1.1" 200 -
+2026-09-28 11:54:05,666 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:05] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-28 11:54:05,681 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:05] "GET /api/estado HTTP/1.1" 200 -
+2026-09-28 11:54:05,698 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-28 11:54:05,699 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:05] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-28 11:54:05,763 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:05] "[36mGET /pdf/Informe%20Precio%20Diario%2025.09.2026.pdf HTTP/1.1[0m" 304 -
+2026-09-28 11:54:05,971 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:05] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-28 11:54:13,091 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:13] "GET / HTTP/1.1" 200 -
+2026-09-28 11:54:13,341 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 11:54:13] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-28 12:01:22,886 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-28 12:01:23,400 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:23] "GET / HTTP/1.1" 200 -
+2026-09-28 12:01:23,629 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:23] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-28 12:01:23,647 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:23] "GET /api/estado HTTP/1.1" 200 -
+2026-09-28 12:01:23,671 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-28 12:01:23,672 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:23] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-28 12:01:23,706 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:23] "[36mGET /pdf/Informe%20Precio%20Diario%2025.09.2026.pdf HTTP/1.1[0m" 304 -
+2026-09-28 12:01:23,981 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:23] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-28 12:01:30,847 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-28 12:01:30,847 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:01:30] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-28 12:01:31,531 | INFO     | modulos.cargar_historicos | Ya existe historico_omip_electricidad.csv, se omite importacion de electricidad
+2026-09-28 12:01:31,531 | INFO     | modulos.cargar_historicos | Ya existe historico_omip_gas.csv, se omite importacion de gas
+2026-09-28 12:01:31,531 | INFO     | modulos.cargar_historicos | Ya existe historico_mibgas.csv, se omite importación de MIBGAS historico
+2026-09-28 12:01:31,531 | INFO     | informe | === Fecha de informe: 2026-09-28 00:00:00 (entrega mañana: 2026-09-29 00:00:00) ===
+2026-09-28 12:01:31,540 | INFO     | modulos.descargar_omie | Descargando OMIE 2026-09-29 (https://www.omie.es/en/file-download?parents=marginalpdbc&filename=marginalpdbc_20260929.1)
+2026-09-28 12:01:31,825 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29: archivo marginalpdbc no disponible (OMIE no disponible para 2026-09-29 (HTTP 404)); probando pagina
+2026-09-28 12:01:31,825 | INFO     | modulos.descargar_omie | Descargando OMIE pagina 2026-09-29 (https://www.omie.es/es/market-results/daily/daily-market/day-ahead-price {'date': '2026-09-29', 'scope': 'daily', 'period': '60', 'op': 'Buscar'})
+2026-09-28 12:01:32,247 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29: pagina no disponible: OMIE pagina sin grafico para 2026-09-29
+2026-09-28 12:01:32,248 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29 no disponible (intento 1/7): OMIE no disponible para 2026-09-29 (HTTP 404). Reintentando en 600s
+2026-09-28 12:11:32,249 | INFO     | modulos.descargar_omie | Descargando OMIE 2026-09-29 (https://www.omie.es/en/file-download?parents=marginalpdbc&filename=marginalpdbc_20260929.1)
+2026-09-28 12:11:32,474 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29: archivo marginalpdbc no disponible (OMIE no disponible para 2026-09-29 (HTTP 404)); probando pagina
+2026-09-28 12:11:32,474 | INFO     | modulos.descargar_omie | Descargando OMIE pagina 2026-09-29 (https://www.omie.es/es/market-results/daily/daily-market/day-ahead-price {'date': '2026-09-29', 'scope': 'daily', 'period': '60', 'op': 'Buscar'})
+2026-09-28 12:11:32,891 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29: pagina no disponible: OMIE pagina sin grafico para 2026-09-29
+2026-09-28 12:11:32,892 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29 no disponible (intento 2/7): OMIE no disponible para 2026-09-29 (HTTP 404). Reintentando en 600s
+2026-09-28 12:12:27,411 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-28 12:12:27,915 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:27] "GET / HTTP/1.1" 200 -
+2026-09-28 12:12:28,073 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:28] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-28 12:12:28,074 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:28] "GET /api/estado HTTP/1.1" 200 -
+2026-09-28 12:12:28,094 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-28 12:12:28,095 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:28] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-28 12:12:28,154 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:28] "[36mGET /pdf/Informe%20Precio%20Diario%2025.09.2026.pdf HTTP/1.1[0m" 304 -
+2026-09-28 12:12:28,386 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:28] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-28 12:12:51,028 | INFO     | modulos.contactos | Guardados 1 destinatarios en Contactos Envio Diario.xlsx
+2026-09-28 12:12:51,029 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:51] "POST /api/contactos HTTP/1.1" 200 -
+2026-09-28 12:12:55,936 | INFO     | modulos.contactos | Destinatarios (1): tbrellenthin@medhesa.es
+2026-09-28 12:12:56,037 | INFO     | modulos.enviar_correo | Imágenes de la firma (1): image001.jpg
+2026-09-28 12:12:56,255 | INFO     | modulos.enviar_correo | Enviado a tbrellenthin@medhesa.es
+2026-09-28 12:12:56,284 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:12:56] "POST /api/enviar HTTP/1.1" 200 -
+2026-09-28 12:13:02,930 | INFO     | werkzeug | 127.0.0.1 - - [28/Sep/2026 12:13:02] "[31m[1mPOST /api/contactos HTTP/1.1[0m" 400 -
