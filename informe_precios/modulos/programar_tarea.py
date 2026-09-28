@@ -2,8 +2,10 @@
 
 La tarea se crea con ``schtasks`` para que se ejecute a diario a una hora
 configurable (por defecto 14:00). Ejecuta ``generar_informe.py`` con
-``pythonw.exe`` (sin ventana de consola); el propio script ignora sábados y
-domingos y lanza Outlook vía COM con la sesión del usuario.
+``pythonw.exe`` (sin ventana de consola) y, si la aplicación está compilada
+como ejecutable, el propio ``.exe`` con el parámetro ``--generar``. El propio
+script ignora sábados y domingos y lanza Outlook vía COM con la sesión del
+usuario.
 """
 
 import logging
@@ -16,6 +18,12 @@ from pathlib import Path
 import config
 
 log = logging.getLogger(__name__)
+
+#: Nombre del módulo lanzador, también punto de entrada del ejecutable.
+MODULO_LANZADOR = "lanzador.py"
+
+#: Parámetro que hace que el ejecutable genere y envíe y luego se cierre.
+ARG_GENERAR = "--generar"
 
 RUTA_SCRIPT = Path(__file__).resolve().parents[1] / "generar_informe.py"
 
@@ -37,7 +45,14 @@ def _ruta_pythonw():
 
 
 def _valor_tr():
-    """Comando que ejecutará la tarea: pythonw generar_informe.py."""
+    """Comando que ejecutará la tarea programada.
+
+    Con el ejecutable compilado se invoca a sí mismo con ``--generar`` (ya
+    funciona sin ventana de consola); desde el código fuente se usa
+    ``pythonw.exe generar_informe.py`` como hasta ahora.
+    """
+    if getattr(sys, "frozen", False):
+        return f'"{Path(sys.executable)}" {ARG_GENERAR}'
     return f'"{_ruta_pythonw()}" "{RUTA_SCRIPT}"'
 
 

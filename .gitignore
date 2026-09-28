@@ -1,0 +1,20 @@
+# Artefactos de compilación con PyInstaller.
+# Se regeneran con doble clic en "Compilar ejecutable.bat"; no van al repo.
+# Ocupan más de 600 MB.
+/build/
+/aplicacion/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+
+# Temporales que deja PyInstaller al rehacer el empaquetado
+*.spec.bak
+/*.pkg
+
+# Editores y sistema
+.vscode/
+Thumbs.db
+desktop.ini
+~$*.xlsx
+~$*.docx

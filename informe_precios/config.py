@@ -1,15 +1,54 @@
 """Configuración central del generador de informe de precios diarios."""
 
 import os
+import sys
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Rutas
 # ---------------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent                 # carpeta informe_precios
-RAIZ = BASE_DIR.parent                                    # carpeta "Informe Diario"
+# BASE_DIR: carpeta donde se resuelve el paquete. Con el ejecutable
+# compilado es la carpeta _MEIPASS de PyInstaller, que es donde se empaqueta
+# la plantilla web de la interfaz.
+BASE_DIR = Path(__file__).resolve().parent
 
-DATOS_DIR = BASE_DIR / "datos"
+# Archivos que identifican la carpeta de datos del proyecto. Sirven para que el
+# ejecutable compilado encuentre la raiz aunque se mueva de sitio.
+MARCADORES_RAIZ = (
+    "informe_precios/config.py",
+    "Contactos Envio Diario.xlsx",
+    "salida/ultimo_estado.json",
+)
+
+
+def _buscar_raiz():
+    """Localiza la carpeta "Informe Diario" con la que se trabaja.
+
+    Orden de busqueda:
+      1. Variable de entorno INFORME_DIARIO_RAIZ (instalaciones moviles).
+      2. Desde el codigo fuente: la carpeta padre del paquete.
+      3. Desde el .exe: la carpeta del ejecutable y sus dos padre, buscando
+         un archivo marcador del proyecto.
+      4. Si no hay ninguno, la propia carpeta del ejecutable (copia portable
+         que guarda sus datos al lado).
+    """
+    env = os.environ.get("INFORME_DIARIO_RAIZ")
+    if env:
+        return Path(env).expanduser().resolve()
+
+    if not getattr(sys, "frozen", False):
+        return BASE_DIR.parent
+
+    carpeta = Path(sys.executable).resolve().parent
+    for candidata in (carpeta, carpeta.parent, carpeta.parent.parent):
+        if any((candidata / m).exists() for m in MARCADORES_RAIZ):
+            return candidata
+    return carpeta
+
+
+RAIZ = _buscar_raiz()
+
+DATOS_DIR = RAIZ / "informe_precios" / "datos"
 OMIE_DIR = DATOS_DIR / "omie"
 OMIP_ELEC_DIR = DATOS_DIR / "omip_elec"
 OMIP_GAS_DIR = DATOS_DIR / "omip_gas"
@@ -141,7 +180,13 @@ CUERPO = (
     '</span>'
 )
 NOMBRE_FIRMA = "Atenci\u00f3n al Cliente (atencionalcliente@medhesa.es)"
-FIRMAS_DIR = Path(os.environ["APPDATA"]) / "Microsoft" / "Signatures"
+FIRMAS_DIR = Path(os.environ.get("APPDATA", str(RAIZ))) / "Microsoft" / "Signatures"
+
+# ---------------------------------------------------------------------------
+# Aplicacion de escritorio (lanzador)
+# ---------------------------------------------------------------------------
+SERVIDOR_HOST = "127.0.0.1"
+SERVIDOR_PUERTO = 8000
 
 # ---------------------------------------------------------------------------
 # Env\u00edo programado (tarea de Windows creada desde la web)

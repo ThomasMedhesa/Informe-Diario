@@ -22,7 +22,7 @@ from modulos import contactos, enviar_correo, programar_tarea
 
 log = logging.getLogger(__name__)
 
-app = Flask(__name__, template_folder="web")
+app = Flask(__name__, template_folder=str(config.BASE_DIR / "web"))
 
 _lock = threading.Lock()
 
