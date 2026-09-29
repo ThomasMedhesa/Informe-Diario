@@ -14,10 +14,11 @@ existentes en los CSV de historico (BASE_M_Oct-26, BASE_Q4_2026,
 BASE_YEAR_2027...), de modo que el historico de cada contrato sigue
 acumulandose en su columna.
 
-Cuando un trimestre acaba de entrar en la ventana aun no tiene historico: para
-el primer minigrafico se recurre al trimestre anterior hasta que el nuevo
-reune OMIP_PUNTOS_MINIMOS sesiones con precio, y el titulo se construye del
-trimestre que acaba dibujandose.
+Los 4 minigraficos de evolucion muestran los 3 trimestres mas recientes que ya
+tienen historico suficiente, del mas antiguo al mas reciente, y el ano mas
+cercano. Como un trimestre recien incorporado aun no tiene historico, hasta
+reunir OMIP_PUNTOS_MINIMOS sesiones ocupa su lugar el trimestre que acaba de
+caducar: la pagina mantiene asi 3 trimestres en orden cronologico y sin huecos.
 
 NOTA: este archivo usa escapes unicode (\\uXXXX) en las etiquetas, igual que
 config.py, para evitar problemas de codificacion en otros entornos.
@@ -170,79 +171,58 @@ def _con_datos(columna, hist):
     return int(hist[columna].notna().sum()) >= config.OMIP_PUNTOS_MINIMOS
 
 
-def _minigrafico(candidatos, hist):
-    """(titulo, columna) del 1er minigrafico entre los candidatos propuestos.
+def _trimestres_cronologicos(trimestres):
+    """Trimestres en orden cronologico, empezando por el mas antiguo.
 
-    Se dibuja el primero que tenga OMIP_PUNTOS_MINIMOS sesiones con precio.
-    None si ninguno llega.
+    Delante de la ventana se encadena el trimestre que acaba de caducar (y los
+    anteriores, por si tampoco tuvieran historico), porque el recien incorporado
+    aun no lo tiene.
     """
-    for codigo in candidatos:
-        partes = _trimestre(codigo)
-        if not partes:
-            continue
-        _, _, columna, titulo = partes
-        if _con_datos(columna, hist):
-            if codigo != candidatos[0]:
-                log.info("El trimestre %s aun no tiene historico suficiente; "
-                         "se dibuja %s", candidatos[0], columna)
-            return titulo, columna
-    return None
-
-
-def _candidatos_1er_grafico(trimestres):
-    """Trimestres candidatos para el 1er minigrafico, en orden de preferencia.
-
-    El primero es el trimestre mas cercano de la ventana, que es el que acaba
-    de entrar y aun puede no tener historico. Detras se encadenan los
-    trimestres ya fuera de la ventana, empezando por el que acaba de caducar
-    (el mas proximo al mas antiguo de la ventana), que si tiene historico
-    completo. Se limita el recorrido por si el historico estubiera muy corto.
-    """
-    en_ventana = {c[1] for c in trimestres}
-    candidatos = [trimestres[-1][1]]
+    if not trimestres:
+        return []
+    anteriores = []
     anterior = trimestre_anterior(trimestres[0][1])
     for _ in range(MAX_TRIMESTRES_RERESERVA):
-        if anterior is None or anterior in en_ventana:
+        if anterior is None:
             break
-        candidatos.append(anterior)
+        partes = _trimestre(anterior)
+        if partes:
+            anteriores.append(partes)
         anterior = trimestre_anterior(anterior)
-    return candidatos
+    anteriores.reverse()
+    ventana = [p for p in (_trimestre(c[1]) for c in trimestres) if p]
+    return anteriores + ventana
 
 
 def series_graficos(contratos, hist):
     """Series definitivas de los 4 minigraficos de evolucion.
 
-    Orden de pantalla: el trimestre mas cercano (el 1o), el anterior, el
-    anterior a ese y el ano mas cercano. El 1o se dibuja en cuanto tiene
-    OMIP_PUNTOS_MINIMOS sesiones; hasta entonces recurre al trimestre que
-    acaba de caducar, con su propio titulo. Se omiten las series sin
-    historico suficiente.
+    Los 3 primeros son los trimestres mas recientes que ya tienen historico
+    suficiente, del mas antiguo al mas reciente, y el 4o el ano mas cercano.
+
+    El trimestre recien incorporado no tiene historico, asi que hasta reunir
+    OMIP_PUNTOS_MINIMOS sesiones sigue entrando en su lugar el trimestre que
+    acaba de caducar. De ese modo la pagina muestra siempre 3 trimestres, en
+    orden cronologico, sin huecos ni repeticiones.
 
     Devuelve [(titulo, columna, color)].
     """
     trimestres = [c for c in contratos if RE_TRIM.match(c[1] or "")]
     anios = [c for c in contratos if RE_ANIO.match(c[1] or "")]
 
-    salida = []
-    if trimestres:
-        elegido = _minigrafico(_candidatos_1er_grafico(trimestres), hist)
-        if elegido:
-            salida.append((*elegido, COLORES[0]))
+    con_datos = [p for p in _trimestres_cronologicos(trimestres)
+                 if _con_datos(p[2], hist)][-3:]
 
-    # Los dos trimestres anteriores al mas cercano ocupan los minigraficos 2 y
-    # 3. Se recortan por si OMIP_N_TRIMESTRES se aumentara.
-    for i, (_, codigo, _) in enumerate(reversed(trimestres[-3:-1]), start=1):
-        partes = _trimestre(codigo)
-        if partes and _con_datos(partes[2], hist):
-            salida.append((partes[3], partes[2], COLORES[i]))
+    series = [(titulo, columna) for _, _, columna, titulo in con_datos]
 
     if anios:
         anio = 2000 + int(RE_ANIO.match(anios[0][1]).group(1))
         columna = _columna("anio", anio)
         if _con_datos(columna, hist):
-            salida.append((_titulo("anio", anio), columna, COLORES[3]))
+            series.append((_titulo("anio", anio), columna))
 
-    return salida
+    return [(titulo, columna, COLORES[i])
+            for i, (titulo, columna) in enumerate(series)]
 
 
 def desde_columna(columna):
