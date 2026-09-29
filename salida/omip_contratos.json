@@ -1,0 +1,91 @@
+{
+  "electricidad": [
+    [
+      "Base Octubre - 2026",
+      "M Oct-26",
+      "BASE_M_Oct-26"
+    ],
+    [
+      "Base Noviembre - 2026",
+      "M Nov-26",
+      "BASE_M_Nov-26"
+    ],
+    [
+      "Base Diciembre - 2026",
+      "M Dec-26",
+      "BASE_M_Dec-26"
+    ],
+    [
+      "Base 1º Trim. - 2027",
+      "Q1-27",
+      "BASE_Q1_2027"
+    ],
+    [
+      "Base 2º Trim. - 2027",
+      "Q2-27",
+      "BASE_Q2_2027"
+    ],
+    [
+      "Base 3º Trim. - 2027",
+      "Q3-27",
+      "BASE_Q3_2027"
+    ],
+    [
+      "Base Año - 2027",
+      "YR-27",
+      "BASE_YEAR_2027"
+    ],
+    [
+      "Base Año - 2028",
+      "YR-28",
+      "BASE_YEAR_2028"
+    ],
+    [
+      "Base Año - 2029",
+      "YR-29",
+      "BASE_YEAR_2029"
+    ]
+  ],
+  "gas": [
+    [
+      "Base Octubre - 2026",
+      "M Oct-26",
+      "BASE_M_Oct-26"
+    ],
+    [
+      "Base Noviembre - 2026",
+      "M Nov-26",
+      "BASE_M_Nov-26"
+    ],
+    [
+      "Base Diciembre - 2026",
+      "M Dec-26",
+      "BASE_M_Dec-26"
+    ],
+    [
+      "Base 1º Trim. - 2027",
+      "Q1-27",
+      "BASE_Q1_2027"
+    ],
+    [
+      "Base 2º Trim. - 2027",
+      "Q2-27",
+      "BASE_Q2_2027"
+    ],
+    [
+      "Base 3º Trim. - 2027",
+      "Q3-27",
+      "BASE_Q3_2027"
+    ],
+    [
+      "Base Año - 2027",
+      "YR-27",
+      "BASE_YEAR_2027"
+    ],
+    [
+      "Base Año - 2028",
+      "YR-28",
+      "BASE_YEAR_2028"
+    ]
+  ]
+}

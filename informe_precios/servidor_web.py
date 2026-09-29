@@ -244,6 +244,29 @@ def api_generar():
         _lock.release()
 
 
+MERCADOS_MANUAL = ("ELEC", "GAS")
+
+
+def _clave_manual(clave):
+    """Normaliza la clave de un dato manual de futuros.
+
+    Electricidad y gas comparten columna historico, asi que la clave lleva el
+    mercado: "ELEC:BASE_Q3_2027" o "GAS:BASE_Q3_2027". Una clave sin mercado
+    se acepta y se aplica a los dos (compatibilidad con avisos anteriores).
+    """
+    clave = str(clave)
+    if ":" not in clave:
+        return clave
+    mercado, _, columna = clave.partition(":")
+    mercado = mercado.strip().upper()
+    if mercado not in MERCADOS_MANUAL:
+        raise ValueError(f"Mercado desconocido en '{clave}' (usa ELEC o GAS)")
+    columna = columna.strip()
+    if not columna:
+        raise ValueError(f"Columna vacía en '{clave}'")
+    return f"{mercado}:{columna}"
+
+
 def _validar_manual(manual):
     """Valida y convierte a float el dict de datos manuales de la web."""
     limpio = {}
@@ -259,13 +282,14 @@ def _validar_manual(manual):
     fut = manual.get("futuros") or {}
     if not isinstance(fut, dict):
         raise ValueError("'futuros' debe ser un objeto")
-    for col, valor in fut.items():
+    for clave, valor in fut.items():
         if valor in (None, ""):
             continue
+        clave = _clave_manual(clave)
         try:
-            futuros[col] = float(valor)
+            futuros[clave] = float(valor)
         except (TypeError, ValueError):
-            raise ValueError(f"Valor no numérico en {col}")
+            raise ValueError(f"Valor no numérico en {clave}")
     if futuros:
         limpio["futuros"] = futuros
     if not limpio:

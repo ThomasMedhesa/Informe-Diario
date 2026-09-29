@@ -11,6 +11,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 import config
+from modulos import contratos_omip
 
 log = logging.getLogger(__name__)
 
@@ -187,27 +188,29 @@ def grafico_evolucion(hist, columnas, titulo, ruta, color=COLOR_PRINCIPAL):
     return _guardar(fig, ruta, ANCHO_MIN, ALTO_MIN)
 
 
-def graficos_electricidad(hist_elec, carpeta):
+def graficos_electricidad(hist_elec, carpeta, contratos):
     """Lista de rutas PNG, una por grafico de evolucion de electricidad.
 
+    ``contratos`` es la ventana de contratos activa (ver contratos_omip.py).
     El orden de la lista coincide con la colocacion en el PDF:
     sup.izq, sup.der, inf.izq, inf.der.
     """
-    rutas = []
-    for i, (titulo, columnas, color) in enumerate(config.GRAFICOS_ELEC):
-        ruta = carpeta / f"evol_elec_{i}.png"
-        rutas.append(grafico_evolucion(hist_elec, columnas, titulo, ruta,
-                                       color=color))
-    return rutas
+    return _mini_graficos(hist_elec, carpeta, contratos, "evol_elec_")
 
 
-def graficos_gas_futuros(hist_gas, carpeta):
+def graficos_gas_futuros(hist_gas, carpeta, contratos):
     """Lista de rutas PNG, una por grafico de evolucion de gas."""
+    return _mini_graficos(hist_gas, carpeta, contratos, "evol_gas_")
+
+
+def _mini_graficos(hist, carpeta, contratos, prefijo):
+    """Dibuja los minigraficos de la ventana y devuelve sus rutas."""
     rutas = []
-    for i, (titulo, columnas, color) in enumerate(config.GRAFICOS_GAS):
-        ruta = carpeta / f"evol_gas_{i}.png"
-        rutas.append(grafico_evolucion(hist_gas, columnas, titulo, ruta,
-                                       color=color))
+    for i, (titulo, columna, color) in enumerate(contratos_omip.series_graficos(contratos, hist)):
+        ruta = carpeta / f"{prefijo}{i}.png"
+        imagen = grafico_evolucion(hist, columna, titulo, ruta, color=color)
+        if imagen:
+            rutas.append(imagen)
     return rutas
 
 

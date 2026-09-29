@@ -17,6 +17,7 @@ import pandas as pd
 import requests
 
 import config
+from modulos import contratos_omip
 
 log = logging.getLogger(__name__)
 
@@ -95,10 +96,16 @@ def _precio_contrato(precios, codigo_madurez):
     return None
 
 
-def _acumular_csv(csv, contratos, producto, instrumento, fecha):
+def _acumular_csv(csv, mercado, producto, instrumento, fecha):
     """Descarga y anade la fila del dia al CSV de historicos.
 
-    Devuelve (dataframe_historico, dict valor_actual_por_contrato).
+    La ventana de contratos se deduce de lo que publica OMIP ese dia (ver
+    modulos/contratos_omip.py); si no se puede consultar, se reutiliza la
+    ultima ventana guardada y todos sus contratos quedaran sin precio, de modo
+    que el control de calidad los marque como faltantes.
+
+    Devuelve (dataframe_historico, dict valor_actual_por_etiqueta,
+    lista_de_contratos).
     """
     fecha = pd.Timestamp(fecha).normalize()
     if csv.exists():
@@ -108,52 +115,91 @@ def _acumular_csv(csv, contratos, producto, instrumento, fecha):
     else:
         hist = pd.DataFrame()
 
+    cache = contratos_omip.cargar_cache()
+    ventana_cache = cache.get(mercado, [])
+    ya_acumulado = fecha.date() in fechas
+
+    # Si la fecha ya estaba acumulada y la ventana esta guardada no hace falta
+    # volver a preguntar a OMIP. Si falta la ventana guardada (primera
+    # ejecucion tras un cambio, o cache borrada) se consulta igualmente: hace
+    # falta para saber que contratos mostrar y para no arrastrar una ventana
+    # obsoleta.
+    consulta_omip = not (ya_acumulado and ventana_cache)
     precios = None
-    if fecha.date() not in fechas:
+    if consulta_omip:
         try:
             precios = _precios_fecha(producto, instrumento, fecha)
         except (requests.HTTPError, ValueError) as e:
             log.warning("No se acumulo OMIP %s %s: %s", producto, instrumento, e)
 
-    if precios is not None:
+    if precios:
+        contratos = contratos_omip.resolver(precios)
+        contratos_omip.guardar_ventana(mercado, contratos, cache)
+    else:
+        if not ventana_cache:
+            ventana_cache = contratos_omip.ventana_desde_historico(hist)
+        if not ventana_cache:
+            raise ValueError(
+                f"No hay datos de OMIP para {fecha.date()} ni ventana de "
+                f"contratos guardada para {mercado}"
+            )
+        contratos = list(ventana_cache)
+        if ya_acumulado and not consulta_omip:
+            log.info("OMIP %s: la fecha %s ya estaba acumulada", mercado, fecha.date())
+        else:
+            # Sin la fila de hoy no hay precio de hoy para ningun contrato: se
+            # dejan todos a None para que el control de calidad bloquee el
+            # envio, en vez de mandar precios de un dia anterior.
+            log.warning(
+                "OMIP %s: sin datos para %s; se bloquea el envio. Ventana "
+                "mantenida con %d contratos", mercado, fecha.date(), len(contratos)
+            )
+
+    if precios:
         fila = {"fecha": pd.Timestamp(fecha.date())}
         for etiqueta, codigo, col in contratos:
-            fila[col] = _precio_contrato(precios, codigo)
-            act = _precio_contrato(precios, codigo)
-            log.info(
-                "OMIP %s %s: %s = %s", producto, instrumento, etiqueta,
-                act if act is not None else "n.d.",
-            )
+            precio = _precio_contrato(precios, codigo)
+            fila[col] = precio
+            log.info("OMIP %s: %s = %s", mercado, etiqueta,
+                     precio if precio is not None else "n.d.")
         nuevo = pd.DataFrame([fila])
         hist = pd.concat([hist, nuevo], ignore_index=True)
         hist = hist.drop_duplicates(subset=["fecha"], keep="last")
         hist = hist.sort_values("fecha").reset_index(drop=True)
         hist.to_csv(csv, index=False)
 
-    # valores actuales (ultima fecha con datos)
+    # Valores actuales. Solo son validos si la fila de hoy (recien descargada o
+    # ya acumulada) contiene los precios de la ventana vigente.
+    precios_de_hoy = bool(precios) or (ya_acumulado and not consulta_omip)
     actuales = {}
-    if len(hist) > 0:
-        ultima = hist.iloc[-1]
-        for etiqueta, codigo, col in contratos:
-            v = ultima.get(col)
+    if precios_de_hoy:
+        ultima = hist.iloc[-1] if len(hist) > 0 else None
+        for etiqueta, _, col in contratos:
+            v = None if ultima is None else ultima.get(col)
             actuales[etiqueta] = float(v) if pd.notna(v) else None
     else:
-        for etiqueta, codigo, col in contratos:
+        for etiqueta, _, _ in contratos:
             actuales[etiqueta] = None
-    return hist, actuales
+    return hist, actuales, contratos
 
 
 def acumular_electricidad(fecha):
-    """Acumula futuros electricos y devuelve (historico, actuales)."""
+    """Acumula futuros electricos.
+
+    Devuelve (historico, valores_actuales, contratos_de_la_ventana).
+    """
     return _acumular_csv(
-        config.CSV_OMIP_ELEC, config.CONTRATOS_ELEC,
+        config.CSV_OMIP_ELEC, "electricidad",
         config.OMIP_PRODUCT_ELEC, config.OMIP_INSTRUMENT_ELEC, fecha,
     )
 
 
 def acumular_gas(fecha):
-    """Acumula futuros de gas y devuelve (historico, actuales)."""
+    """Acumula futuros de gas.
+
+    Devuelve (historico, valores_actuales, contratos_de_la_ventana).
+    """
     return _acumular_csv(
-        config.CSV_OMIP_GAS, config.CONTRATOS_GAS,
+        config.CSV_OMIP_GAS, "gas",
         config.OMIP_PRODUCT_GAS, config.OMIP_INSTRUMENT_GAS, fecha,
     )

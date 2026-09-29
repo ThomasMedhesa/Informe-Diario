@@ -92,61 +92,22 @@ MIBGAS_ANUAL_XLSX = (
 # ---------------------------------------------------------------------------
 # Contratos de futuros OMIP a mostrar (electricidad y gas)
 # ---------------------------------------------------------------------------
-# Cada contrato: (etiqueta_para_tabla, codigo_madurez_OMIP, columna_historico)
-# codigo_madurez_OMIP es el texto que identifica la madurez en el HTML de OMIP
-# (p. ej. "M Oct-26", "Q4-26", "Q1-27", "YR-27"). Se busca como substring.
-CONTRATOS_ELEC = [
-    ("Base Octubre - 2026",   "M Oct-26", "BASE_M_Oct-26"),
-    ("Base Noviembre - 2026", "M Nov-26", "BASE_M_Nov-26"),
-    ("Base Diciembre - 2026", "M Dec-26", "BASE_M_Dec-26"),
-    ("Base 4\u00ba Trim. - 2026", "Q4-26", "BASE_Q4_2026"),
-    ("Base 1\u00ba Trim. - 2027", "Q1-27", "BASE_Q1_2027"),
-    ("Base 2\u00ba Trim. - 2027", "Q2-27", "BASE_Q2_2027"),
-    ("Base A\u00f1o - 2027",  "YR-27",  "BASE_YEAR_2027"),
-    ("Base A\u00f1o - 2028",  "YR-28",  "BASE_YEAR_2028"),
-    ("Base A\u00f1o - 2029",  "YR-29",  "BASE_YEAR_2029"),
-]
+# La ventana de contratos no se escribe aqui: se deduce cada dia de las
+# maturidades que OMIP publica realmente (ver modulos/contratos_omip.py).
+# Estos son los limites de cuantos contratos se muestran de cada tipo.
+# El gas solo publica 2 contratos anuales, asi que se muestran los 2.
+OMIP_N_MENSUALES = 3
+OMIP_N_TRIMESTRES = 3
+OMIP_N_ANUALES = 3
 
-CONTRATOS_GAS = [
-    ("Base Octubre - 2026",   "M Oct-26", "BASE_M_Oct-26"),
-    ("Base Noviembre - 2026", "M Nov-26", "BASE_M_Nov-26"),
-    ("Base Diciembre - 2026", "M Dec-26", "BASE_M_Dec-26"),
-    ("Base 4\u00ba Trim. - 2026", "Q4-26", "BASE_Q4_2026"),
-    ("Base 1\u00ba Trim. - 2027", "Q1-27", "BASE_Q1_2027"),
-    ("Base 2\u00ba Trim. - 2027", "Q2-27", "BASE_Q2_2027"),
-    ("Base A\u00f1o - 2027",  "YR-27",  "BASE_YEAR_2027"),
-    ("Base A\u00f1o - 2028",  "YR-28",  "BASE_YEAR_2028"),
-]
+# Sesiones con precio que necesita un contrato para tener su propio
+# minigrafico. Un trimestre recien incorporado tarda estos dias en tener
+# historico; hasta entonces su grafico muestra el trimestre anterior.
+OMIP_PUNTOS_MINIMOS = 2
 
-# Períodos para los gráficos de evolución (página 3 y 5):
-# (título, lista_columnas, color_linea). Cada gráfico usa la primera columna
-# de la lista que tenga datos suficientes.
-# Orden en pantalla: 1º sup.izq (quarter actual) -> 2º sup.der (siguiente)
-#                    -> 3º inf.izq (subsiguiente) -> 4º inf.der (próximo año).
-# Electricidad y gas comparten la misma paleta de colores.
-_GRAF_COLORES = ["#1a5276", "#c0392b", "#8e44ad", "#d68910"]
-
-GRAFICOS_ELEC = [
-    ("EVOLUCI\u00d3N PRECIO Q4 (4\u00ba TRIMESTRE 2026)",
-     ["BASE_Q4_2026"], _GRAF_COLORES[0]),
-    ("EVOLUCI\u00d3N PRECIO Q1 (1\u00ba TRIMESTRE 2027)",
-     ["BASE_Q1_2027"], _GRAF_COLORES[1]),
-    ("EVOLUCI\u00d3N PRECIO Q2 (2\u00ba TRIMESTRE 2027)",
-     ["BASE_Q2_2027"], _GRAF_COLORES[2]),
-    ("EVOLUCI\u00d3N PRECIO ANUAL (2027)",
-     ["BASE_YEAR_2027"], _GRAF_COLORES[3]),
-]
-
-GRAFICOS_GAS = [
-    ("EVOLUCI\u00d3N PRECIO Q4 (4\u00ba TRIMESTRE 2026)",
-     ["BASE_Q4_2026"], _GRAF_COLORES[0]),
-    ("EVOLUCI\u00d3N PRECIO Q1 (1\u00ba TRIMESTRE 2027)",
-     ["BASE_Q1_2027"], _GRAF_COLORES[1]),
-    ("EVOLUCI\u00d3N PRECIO Q2 (2\u00ba TRIMESTRE 2027)",
-     ["BASE_Q2_2027"], _GRAF_COLORES[2]),
-    ("EVOLUCI\u00d3N PRECIO ANUAL (2027)",
-     ["BASE_YEAR_2027"], _GRAF_COLORES[3]),
-]
+# Ultima ventana de contratos resuelta, para poder reutilizarla si un dia
+# OMIP no esta disponible.
+OMIP_CONTRATOS_JSON = SALIDA_DIR / "omip_contratos.json"
 
 # ---------------------------------------------------------------------------
 # Identificadores de producto/país para OMIP

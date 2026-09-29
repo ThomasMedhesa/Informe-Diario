@@ -2139,3 +2139,639 @@
 2026-09-25 14:00:47,836 | INFO     | modulos.enviar_correo | Enviado a tbrellenthin@medhesa.es
 2026-09-25 14:00:47,924 | INFO     | modulos.enviar_correo | Enviado a esanroman@medhesa.es
 2026-09-25 14:00:47,931 | INFO     | informe | Informe enviado a 2 destinatarios
+2026-09-28 14:00:01,226 | INFO     | informe | Log de ejecución: C:\Users\PC41\Desktop\Dev\Informe Diario\salida\generar_informe.log
+2026-09-28 14:00:01,228 | INFO     | modulos.cargar_historicos | Ya existe historico_omip_electricidad.csv, se omite importacion de electricidad
+2026-09-28 14:00:01,228 | INFO     | modulos.cargar_historicos | Ya existe historico_omip_gas.csv, se omite importacion de gas
+2026-09-28 14:00:01,228 | INFO     | modulos.cargar_historicos | Ya existe historico_mibgas.csv, se omite importación de MIBGAS historico
+2026-09-28 14:00:01,228 | INFO     | informe | === Fecha de informe: 2026-09-28 00:00:00 (entrega mañana: 2026-09-29 00:00:00) ===
+2026-09-28 14:00:01,233 | INFO     | modulos.descargar_omie | Descargando OMIE 2026-09-29 (https://www.omie.es/en/file-download?parents=marginalpdbc&filename=marginalpdbc_20260929.1)
+2026-09-28 14:00:01,455 | WARNING  | modulos.descargar_omie | OMIE 2026-09-29: archivo marginalpdbc no disponible (OMIE no disponible para 2026-09-29 (HTTP 404)); probando pagina
+2026-09-28 14:00:01,455 | INFO     | modulos.descargar_omie | Descargando OMIE pagina 2026-09-29 (https://www.omie.es/es/market-results/daily/daily-market/day-ahead-price {'date': '2026-09-29', 'scope': 'daily', 'period': '60', 'op': 'Buscar'})
+2026-09-28 14:00:02,182 | INFO     | modulos.descargar_omie | OMIE 2026-09-29 obtenido de la pagina omie.es
+2026-09-28 14:00:02,203 | INFO     | modulos.descargar_omie | OMIE acumulado: 288 filas (dia 2026-09-29)
+2026-09-28 14:00:02,206 | INFO     | modulos.descargar_omip | Descargando OMIP EL FTB (2026-09-29)
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Octubre - 2026 = 128.2
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Noviembre - 2026 = 142.6
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Diciembre - 2026 = 141.2
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base 4º Trim. - 2026 = n.d.
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base 1º Trim. - 2027 = 115.5
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base 2º Trim. - 2027 = 58.5
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Año - 2027 = 87.75
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Año - 2028 = 60.5
+2026-09-28 14:00:03,548 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Año - 2029 = 58.0
+2026-09-28 14:00:03,556 | INFO     | modulos.descargar_omip | Descargando OMIP NG FGF (2026-09-29)
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Octubre - 2026 = 71.58
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Noviembre - 2026 = 70.85
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Diciembre - 2026 = 68.78
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base 4º Trim. - 2026 = 70.4
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base 1º Trim. - 2027 = 69.89
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base 2º Trim. - 2027 = 53.59
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Año - 2027 = 55.75
+2026-09-28 14:00:05,272 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Año - 2028 = 36.8
+2026-09-28 14:00:05,276 | INFO     | modulos.descargar_mibgas | Descargando MIBGAS anual 2026 (https://www.mibgas.es/en/file-access/MIBGAS_Data_2026.xlsx?path=AGNO_2026/XLS)
+2026-09-28 14:00:10,550 | INFO     | modulos.descargar_mibgas | MIBGAS actualizado: 2501 filas (2026)
+2026-09-28 14:00:10,552 | INFO     | informe | Precio medio OMIE mañana (2026-09-29 00:00:00): 130.1
+2026-09-28 14:00:10,554 | INFO     | informe | Precio MIBGAS hoy (2026-09-28): 75.25
+2026-09-28 14:00:10,782 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:10,795 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:10,797 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpyhsc8xo4.
+2026-09-28 14:00:10,797 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:10,799 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpe5zztkel.
+2026-09-28 14:00:10,799 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpe5zztkel
+2026-09-28 14:00:12,616 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpyhsc8xo4/index.html
+2026-09-28 14:00:14,161 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:14,161 | INFO     | kaleido.kaleido | Got 26FD
+2026-09-28 14:00:14,354 | INFO     | kaleido.kaleido | Reloading tab 26FD before return.
+2026-09-28 14:00:14,502 | INFO     | kaleido.kaleido | Putting tab 26FD back (queue size: 0).
+2026-09-28 14:00:14,503 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:14,503 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:14,504 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:14,504 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:14,505 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:14,575 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:14,575 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:14,575 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:14,576 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:14,576 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:14,831 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:14,831 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:14,832 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:14,832 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:14,833 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\grafico_horario_omie.png
+2026-09-28 14:00:14,885 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:14,885 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:14,886 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp9mo2dgi0.
+2026-09-28 14:00:14,886 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:14,887 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpzfyb76yo.
+2026-09-28 14:00:14,887 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpzfyb76yo
+2026-09-28 14:00:15,243 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmp9mo2dgi0/index.html
+2026-09-28 14:00:16,794 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:16,794 | INFO     | kaleido.kaleido | Got B4C7
+2026-09-28 14:00:16,919 | INFO     | kaleido.kaleido | Reloading tab B4C7 before return.
+2026-09-28 14:00:17,035 | INFO     | kaleido.kaleido | Putting tab B4C7 back (queue size: 0).
+2026-09-28 14:00:17,035 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:17,035 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:17,036 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:17,036 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:17,036 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:17,074 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:17,074 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:17,074 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:17,075 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:17,075 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:17,333 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:17,333 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:17,333 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:17,334 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:17,335 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_0.png
+2026-09-28 14:00:17,371 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:17,372 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:17,372 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpb7ktiy3g.
+2026-09-28 14:00:17,373 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:17,373 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpaq_8htv6.
+2026-09-28 14:00:17,373 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpaq_8htv6
+2026-09-28 14:00:17,746 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpb7ktiy3g/index.html
+2026-09-28 14:00:17,838 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:17,869 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:17,869 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:17,870 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:19,268 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:19,268 | INFO     | kaleido.kaleido | Got FC3C
+2026-09-28 14:00:19,402 | INFO     | kaleido.kaleido | Reloading tab FC3C before return.
+2026-09-28 14:00:19,529 | INFO     | kaleido.kaleido | Putting tab FC3C back (queue size: 0).
+2026-09-28 14:00:19,529 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:19,529 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:19,530 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:19,531 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:19,531 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:19,567 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:19,567 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:19,567 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:19,567 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:19,567 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:19,918 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:19,919 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:19,919 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:19,919 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:19,920 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_1.png
+2026-09-28 14:00:19,959 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:19,960 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:19,960 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpnwanqzfr.
+2026-09-28 14:00:19,961 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:19,961 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp44ivmde0.
+2026-09-28 14:00:19,961 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmp44ivmde0
+2026-09-28 14:00:20,557 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpnwanqzfr/index.html
+2026-09-28 14:00:22,158 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:22,158 | INFO     | kaleido.kaleido | Got 27CF
+2026-09-28 14:00:22,277 | INFO     | kaleido.kaleido | Reloading tab 27CF before return.
+2026-09-28 14:00:22,405 | INFO     | kaleido.kaleido | Putting tab 27CF back (queue size: 0).
+2026-09-28 14:00:22,406 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:22,406 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:22,406 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:22,407 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:22,407 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:22,466 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:22,467 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:22,467 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:22,468 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:22,468 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:22,722 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:22,723 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:22,723 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:22,723 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:22,724 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_2.png
+2026-09-28 14:00:22,730 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:22,730 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:22,765 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:22,765 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:22,766 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpjxfcbb3c.
+2026-09-28 14:00:22,766 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:22,767 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp1qxj5rg9.
+2026-09-28 14:00:22,767 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmp1qxj5rg9
+2026-09-28 14:00:23,159 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpjxfcbb3c/index.html
+2026-09-28 14:00:24,687 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:24,688 | INFO     | kaleido.kaleido | Got 63BC
+2026-09-28 14:00:24,816 | INFO     | kaleido.kaleido | Reloading tab 63BC before return.
+2026-09-28 14:00:24,933 | INFO     | kaleido.kaleido | Putting tab 63BC back (queue size: 0).
+2026-09-28 14:00:24,933 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:24,933 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:24,934 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:24,934 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:24,934 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:24,977 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:24,977 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:24,977 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:24,977 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:24,978 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:25,264 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:25,264 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:25,265 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:25,265 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:25,266 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_3.png
+2026-09-28 14:00:25,274 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:25,274 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:25,304 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:25,304 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:25,305 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpf7f8119s.
+2026-09-28 14:00:25,305 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:25,306 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpsj_hjg50.
+2026-09-28 14:00:25,306 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpsj_hjg50
+2026-09-28 14:00:25,655 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpf7f8119s/index.html
+2026-09-28 14:00:27,130 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:27,130 | INFO     | kaleido.kaleido | Got B88B
+2026-09-28 14:00:27,266 | INFO     | kaleido.kaleido | Reloading tab B88B before return.
+2026-09-28 14:00:27,430 | INFO     | kaleido.kaleido | Putting tab B88B back (queue size: 0).
+2026-09-28 14:00:27,431 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:27,431 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:27,432 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:27,433 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:27,433 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:27,514 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:27,515 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:27,515 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:27,515 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:27,515 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:27,783 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:27,784 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:27,784 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:27,784 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:27,785 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_0.png
+2026-09-28 14:00:27,797 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:27,798 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:27,823 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:27,823 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:27,824 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp_xvve90e.
+2026-09-28 14:00:27,824 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:27,825 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp_eh5gxu5.
+2026-09-28 14:00:27,825 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmp_eh5gxu5
+2026-09-28 14:00:28,241 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmp_xvve90e/index.html
+2026-09-28 14:00:29,779 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:29,779 | INFO     | kaleido.kaleido | Got 34B9
+2026-09-28 14:00:29,932 | INFO     | kaleido.kaleido | Reloading tab 34B9 before return.
+2026-09-28 14:00:30,076 | INFO     | kaleido.kaleido | Putting tab 34B9 back (queue size: 0).
+2026-09-28 14:00:30,076 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:30,077 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:30,077 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:30,077 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:30,078 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:30,125 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:30,126 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:30,126 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:30,126 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:30,126 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:30,723 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:30,723 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:30,723 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:30,723 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:30,724 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_1.png
+2026-09-28 14:00:30,757 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:30,757 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:30,758 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpyjut_848.
+2026-09-28 14:00:30,758 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:30,759 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpdan2d5xg.
+2026-09-28 14:00:30,759 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpdan2d5xg
+2026-09-28 14:00:31,231 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpyjut_848/index.html
+2026-09-28 14:00:32,980 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:32,980 | INFO     | kaleido.kaleido | Got 3430
+2026-09-28 14:00:33,117 | INFO     | kaleido.kaleido | Reloading tab 3430 before return.
+2026-09-28 14:00:33,299 | INFO     | kaleido.kaleido | Putting tab 3430 back (queue size: 0).
+2026-09-28 14:00:33,299 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:33,299 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:33,300 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:33,300 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:33,300 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:33,396 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:33,397 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:33,397 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:33,397 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:33,397 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:33,738 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:33,738 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:33,738 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:33,738 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:33,740 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_2.png
+2026-09-28 14:00:33,780 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:33,781 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:33,781 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpg728fzcq.
+2026-09-28 14:00:33,782 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:33,783 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp6y1c0x3o.
+2026-09-28 14:00:33,783 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmp6y1c0x3o
+2026-09-28 14:00:34,371 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpg728fzcq/index.html
+2026-09-28 14:00:35,863 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:35,864 | INFO     | kaleido.kaleido | Got 4B59
+2026-09-28 14:00:35,995 | INFO     | kaleido.kaleido | Reloading tab 4B59 before return.
+2026-09-28 14:00:36,124 | INFO     | kaleido.kaleido | Putting tab 4B59 back (queue size: 0).
+2026-09-28 14:00:36,124 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:36,124 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:36,125 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:36,125 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:36,125 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:36,166 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:36,167 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:36,167 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:36,167 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:36,167 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:36,457 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:36,457 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:36,457 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:36,457 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:36,459 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_3.png
+2026-09-28 14:00:36,480 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:36,480 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:36,480 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:36,480 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:36,481 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:36,481 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:36,502 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-28 14:00:36,502 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-28 14:00:36,503 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpirmd82tj.
+2026-09-28 14:00:36,503 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-28 14:00:36,504 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpvdx1qdoo.
+2026-09-28 14:00:36,504 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpvdx1qdoo
+2026-09-28 14:00:36,882 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpirmd82tj/index.html
+2026-09-28 14:00:38,342 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-28 14:00:38,343 | INFO     | kaleido.kaleido | Got 678F
+2026-09-28 14:00:38,521 | INFO     | kaleido.kaleido | Reloading tab 678F before return.
+2026-09-28 14:00:38,708 | INFO     | kaleido.kaleido | Putting tab 678F back (queue size: 0).
+2026-09-28 14:00:38,708 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-28 14:00:38,708 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-28 14:00:38,709 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:38,710 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:38,710 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:38,811 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:38,812 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:38,812 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-28 14:00:38,812 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:38,812 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:39,073 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:39,074 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:39,074 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-28 14:00:39,074 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-28 14:00:39,075 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_mibgas.png
+2026-09-28 14:00:39,080 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:39,081 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-28 14:00:40,291 | INFO     | modulos.generar_pdf | PDF generado: C:\Users\PC41\Desktop\Dev\Informe Diario\salida\Informe Precio Diario 28.09.2026.pdf
+2026-09-28 14:00:40,292 | INFO     | informe | === Informe completado: C:\Users\PC41\Desktop\Dev\Informe Diario\salida\Informe Precio Diario 28.09.2026.pdf ===
+2026-09-28 14:00:40,293 | WARNING  | informe | Datos incompletos, NO se envía el informe. Faltan: Base 4º Trim. - 2026
+2026-09-28 14:00:40,446 | INFO     | modulos.enviar_correo | Alerta enviada a tbrellenthin@medhesa.es (1 faltantes)
+2026-09-28 14:00:40,463 | WARNING  | lanzador | Informe generado con 1 datos faltantes.
+2026-09-28 14:00:40,577 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-28 14:00:40,578 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:04,047 | INFO     | informe | Log de ejecución: C:\Users\PC41\Desktop\Dev\Informe Diario\salida\generar_informe.log
+2026-09-29 14:00:04,049 | INFO     | modulos.cargar_historicos | Ya existe historico_omip_electricidad.csv, se omite importacion de electricidad
+2026-09-29 14:00:04,050 | INFO     | modulos.cargar_historicos | Ya existe historico_omip_gas.csv, se omite importacion de gas
+2026-09-29 14:00:04,050 | INFO     | modulos.cargar_historicos | Ya existe historico_mibgas.csv, se omite importación de MIBGAS historico
+2026-09-29 14:00:04,050 | INFO     | informe | === Fecha de informe: 2026-09-29 00:00:00 (entrega mañana: 2026-09-30 00:00:00) ===
+2026-09-29 14:00:04,058 | INFO     | modulos.descargar_omie | Descargando OMIE 2026-09-30 (https://www.omie.es/en/file-download?parents=marginalpdbc&filename=marginalpdbc_20260930.1)
+2026-09-29 14:00:04,348 | WARNING  | modulos.descargar_omie | OMIE 2026-09-30: archivo marginalpdbc no disponible (OMIE no disponible para 2026-09-30 (HTTP 404)); probando pagina
+2026-09-29 14:00:04,348 | INFO     | modulos.descargar_omie | Descargando OMIE pagina 2026-09-30 (https://www.omie.es/es/market-results/daily/daily-market/day-ahead-price {'date': '2026-09-30', 'scope': 'daily', 'period': '60', 'op': 'Buscar'})
+2026-09-29 14:00:04,723 | INFO     | modulos.descargar_omie | OMIE 2026-09-30 obtenido de la pagina omie.es
+2026-09-29 14:00:04,729 | INFO     | modulos.descargar_omie | OMIE acumulado: 312 filas (dia 2026-09-30)
+2026-09-29 14:00:04,732 | INFO     | modulos.descargar_omip | Descargando OMIP EL FTB (2026-09-30)
+2026-09-29 14:00:09,088 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Octubre - 2026 = 132.25
+2026-09-29 14:00:09,088 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Noviembre - 2026 = 143.0
+2026-09-29 14:00:09,088 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Diciembre - 2026 = 145.6
+2026-09-29 14:00:09,088 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base 4º Trim. - 2026 = n.d.
+2026-09-29 14:00:09,089 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base 1º Trim. - 2027 = 117.8
+2026-09-29 14:00:09,089 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base 2º Trim. - 2027 = 60.5
+2026-09-29 14:00:09,089 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Año - 2027 = 89.75
+2026-09-29 14:00:09,089 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Año - 2028 = 60.7
+2026-09-29 14:00:09,089 | INFO     | modulos.descargar_omip | OMIP EL FTB: Base Año - 2029 = 58.3
+2026-09-29 14:00:09,130 | INFO     | modulos.descargar_omip | Descargando OMIP NG FGF (2026-09-30)
+2026-09-29 14:00:15,074 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Octubre - 2026 = 73.03
+2026-09-29 14:00:15,074 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Noviembre - 2026 = 72.9
+2026-09-29 14:00:15,074 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Diciembre - 2026 = 72.12
+2026-09-29 14:00:15,074 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base 4º Trim. - 2026 = n.d.
+2026-09-29 14:00:15,075 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base 1º Trim. - 2027 = 71.57
+2026-09-29 14:00:15,075 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base 2º Trim. - 2027 = 54.42
+2026-09-29 14:00:15,075 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Año - 2027 = 56.73
+2026-09-29 14:00:15,075 | INFO     | modulos.descargar_omip | OMIP NG FGF: Base Año - 2028 = 36.95
+2026-09-29 14:00:15,078 | INFO     | modulos.descargar_mibgas | Descargando MIBGAS anual 2026 (https://www.mibgas.es/en/file-access/MIBGAS_Data_2026.xlsx?path=AGNO_2026/XLS)
+2026-09-29 14:00:19,281 | INFO     | modulos.descargar_mibgas | MIBGAS actualizado: 2502 filas (2026)
+2026-09-29 14:00:19,282 | INFO     | informe | Precio medio OMIE mañana (2026-09-30 00:00:00): 164.98
+2026-09-29 14:00:19,284 | INFO     | informe | Precio MIBGAS hoy (2026-09-29): 74.87
+2026-09-29 14:00:19,511 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:19,526 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:19,529 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmptogeyd_f.
+2026-09-29 14:00:19,530 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:19,531 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpy46phxoz.
+2026-09-29 14:00:19,531 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpy46phxoz
+2026-09-29 14:00:21,711 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmptogeyd_f/index.html
+2026-09-29 14:00:23,293 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:23,293 | INFO     | kaleido.kaleido | Got B961
+2026-09-29 14:00:23,474 | INFO     | kaleido.kaleido | Reloading tab B961 before return.
+2026-09-29 14:00:23,611 | INFO     | kaleido.kaleido | Putting tab B961 back (queue size: 0).
+2026-09-29 14:00:23,611 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:23,611 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:23,612 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:23,614 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:23,614 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:23,671 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:23,671 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:23,671 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:23,672 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:23,672 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:23,945 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:23,945 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:23,945 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:23,945 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:23,946 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\grafico_horario_omie.png
+2026-09-29 14:00:23,993 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:23,993 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:23,994 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpd3bqb1yw.
+2026-09-29 14:00:23,994 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:23,995 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpc664h64o.
+2026-09-29 14:00:23,995 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpc664h64o
+2026-09-29 14:00:24,866 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpd3bqb1yw/index.html
+2026-09-29 14:00:26,308 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:26,308 | INFO     | kaleido.kaleido | Got C981
+2026-09-29 14:00:26,452 | INFO     | kaleido.kaleido | Reloading tab C981 before return.
+2026-09-29 14:00:26,581 | INFO     | kaleido.kaleido | Putting tab C981 back (queue size: 0).
+2026-09-29 14:00:26,581 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:26,581 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:26,582 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:26,582 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:26,582 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:26,638 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:26,638 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:26,638 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:26,639 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:26,639 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:26,978 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:26,979 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:26,979 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:26,979 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:26,980 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_0.png
+2026-09-29 14:00:27,017 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:27,018 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:27,018 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp492kg45c.
+2026-09-29 14:00:27,019 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:27,019 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpa6nbzym4.
+2026-09-29 14:00:27,019 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpa6nbzym4
+2026-09-29 14:00:28,378 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmp492kg45c/index.html
+2026-09-29 14:00:28,588 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:28,589 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:28,589 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:28,589 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:29,970 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:29,970 | INFO     | kaleido.kaleido | Got A519
+2026-09-29 14:00:30,116 | INFO     | kaleido.kaleido | Reloading tab A519 before return.
+2026-09-29 14:00:30,243 | INFO     | kaleido.kaleido | Putting tab A519 back (queue size: 0).
+2026-09-29 14:00:30,243 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:30,243 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:30,244 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:30,244 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:30,244 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:30,302 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:30,302 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:30,303 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:30,303 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:30,303 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:30,595 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:30,595 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:30,595 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:30,595 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:30,596 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_1.png
+2026-09-29 14:00:30,634 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:30,634 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:30,635 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpr164l_vo.
+2026-09-29 14:00:30,635 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:30,636 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpp3e3za9k.
+2026-09-29 14:00:30,636 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpp3e3za9k
+2026-09-29 14:00:31,208 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpr164l_vo/index.html
+2026-09-29 14:00:32,809 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:32,809 | INFO     | kaleido.kaleido | Got 0389
+2026-09-29 14:00:32,926 | INFO     | kaleido.kaleido | Reloading tab 0389 before return.
+2026-09-29 14:00:33,055 | INFO     | kaleido.kaleido | Putting tab 0389 back (queue size: 0).
+2026-09-29 14:00:33,055 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:33,055 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:33,056 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:33,056 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:33,056 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:33,110 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:33,110 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:33,110 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:33,110 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:33,110 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:33,401 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:33,401 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:33,401 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:33,401 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:33,402 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_2.png
+2026-09-29 14:00:33,407 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:33,408 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:33,441 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:33,441 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:33,442 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpm6s55y4s.
+2026-09-29 14:00:33,442 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:33,443 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmph2c41s7u.
+2026-09-29 14:00:33,443 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmph2c41s7u
+2026-09-29 14:00:34,188 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpm6s55y4s/index.html
+2026-09-29 14:00:35,927 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:35,928 | INFO     | kaleido.kaleido | Got EEED
+2026-09-29 14:00:36,061 | INFO     | kaleido.kaleido | Reloading tab EEED before return.
+2026-09-29 14:00:36,187 | INFO     | kaleido.kaleido | Putting tab EEED back (queue size: 0).
+2026-09-29 14:00:36,187 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:36,187 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:36,188 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:36,188 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:36,188 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:36,238 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:36,239 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:36,239 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:36,239 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:36,239 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:36,541 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:36,542 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:36,542 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:36,542 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:36,543 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_elec_3.png
+2026-09-29 14:00:36,547 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:36,547 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:36,581 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:36,582 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:36,582 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpzzivr16p.
+2026-09-29 14:00:36,583 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:36,583 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpmwv53bl4.
+2026-09-29 14:00:36,583 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpmwv53bl4
+2026-09-29 14:00:37,616 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpzzivr16p/index.html
+2026-09-29 14:00:39,113 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:39,113 | INFO     | kaleido.kaleido | Got 620F
+2026-09-29 14:00:39,268 | INFO     | kaleido.kaleido | Reloading tab 620F before return.
+2026-09-29 14:00:39,469 | INFO     | kaleido.kaleido | Putting tab 620F back (queue size: 0).
+2026-09-29 14:00:39,470 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:39,470 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:39,470 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:39,471 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:39,471 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:39,699 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:39,700 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:39,700 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:39,700 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:39,700 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:40,235 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:40,235 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:40,235 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:40,236 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:40,237 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_0.png
+2026-09-29 14:00:40,251 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:40,251 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:40,278 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:40,278 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:40,279 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpr4wn6d0r.
+2026-09-29 14:00:40,279 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:40,280 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp6asz717a.
+2026-09-29 14:00:40,281 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmp6asz717a
+2026-09-29 14:00:41,923 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpr4wn6d0r/index.html
+2026-09-29 14:00:43,222 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:43,222 | INFO     | kaleido.kaleido | Got C7AB
+2026-09-29 14:00:43,373 | INFO     | kaleido.kaleido | Reloading tab C7AB before return.
+2026-09-29 14:00:43,498 | INFO     | kaleido.kaleido | Putting tab C7AB back (queue size: 0).
+2026-09-29 14:00:43,498 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:43,498 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:43,499 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:43,499 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:43,499 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:43,569 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:43,570 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:43,570 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:43,570 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:43,570 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:43,989 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:43,990 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:43,990 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:43,990 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:43,991 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_1.png
+2026-09-29 14:00:44,027 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:44,027 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:44,027 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpv2z6a7cr.
+2026-09-29 14:00:44,028 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:44,029 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp1gaonr89.
+2026-09-29 14:00:44,029 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmp1gaonr89
+2026-09-29 14:00:45,169 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpv2z6a7cr/index.html
+2026-09-29 14:00:46,531 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:46,531 | INFO     | kaleido.kaleido | Got DD85
+2026-09-29 14:00:46,645 | INFO     | kaleido.kaleido | Reloading tab DD85 before return.
+2026-09-29 14:00:46,769 | INFO     | kaleido.kaleido | Putting tab DD85 back (queue size: 0).
+2026-09-29 14:00:46,770 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:46,770 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:46,770 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:46,771 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:46,771 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:46,858 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:46,858 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:46,858 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:46,858 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:46,858 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:47,192 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:47,192 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:47,192 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:47,193 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:47,194 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_2.png
+2026-09-29 14:00:47,230 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:47,231 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:47,231 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpiasoysbm.
+2026-09-29 14:00:47,231 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:47,232 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmpn2zjp1kv.
+2026-09-29 14:00:47,232 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmpn2zjp1kv
+2026-09-29 14:00:47,983 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmpiasoysbm/index.html
+2026-09-29 14:00:49,563 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:49,563 | INFO     | kaleido.kaleido | Got A046
+2026-09-29 14:00:49,703 | INFO     | kaleido.kaleido | Reloading tab A046 before return.
+2026-09-29 14:00:49,823 | INFO     | kaleido.kaleido | Putting tab A046 back (queue size: 0).
+2026-09-29 14:00:49,823 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:49,823 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:49,824 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:49,824 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:49,824 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:49,880 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:49,880 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:49,880 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:49,880 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:49,880 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:50,358 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:50,358 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:50,359 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:50,359 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:50,360 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_gas_3.png
+2026-09-29 14:00:50,376 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:50,377 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:50,377 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:50,377 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:50,377 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:50,377 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:50,402 | INFO     | choreographer.browsers.chromium | Chromium init'ed with kwargs {}
+2026-09-29 14:00:50,403 | INFO     | choreographer.browsers.chromium | Found chromium path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+2026-09-29 14:00:50,403 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmp_j0wo6ap.
+2026-09-29 14:00:50,404 | INFO     | choreographer.browser_async | Opening browser.
+2026-09-29 14:00:50,404 | INFO     | choreographer.utils._tmpfile | Temp directory created: C:\Users\PC41\AppData\Local\Temp\tmplktrbav2.
+2026-09-29 14:00:50,404 | INFO     | choreographer.browsers.chromium | Temporary directory at: C:\Users\PC41\AppData\Local\Temp\tmplktrbav2
+2026-09-29 14:00:51,516 | INFO     | kaleido.kaleido | Conforming 1 to file:///C:/Users/PC41/AppData/Local/Temp/tmp_j0wo6ap/index.html
+2026-09-29 14:00:52,903 | INFO     | kaleido.kaleido | Getting tab from queue (has 1)
+2026-09-29 14:00:52,903 | INFO     | kaleido.kaleido | Got 23D6
+2026-09-29 14:00:53,078 | INFO     | kaleido.kaleido | Reloading tab 23D6 before return.
+2026-09-29 14:00:53,215 | INFO     | kaleido.kaleido | Putting tab 23D6 back (queue size: 0).
+2026-09-29 14:00:53,216 | INFO     | kaleido.kaleido | Waiting for all cleanups to finish.
+2026-09-29 14:00:53,216 | INFO     | kaleido.kaleido | Exiting Kaleido.
+2026-09-29 14:00:53,217 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:53,217 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:53,217 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:53,274 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:53,274 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:53,274 | INFO     | choreographer.browser_async | Closing browser.
+2026-09-29 14:00:53,275 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:53,275 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:53,624 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:53,625 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:53,625 | INFO     | kaleido.kaleido | Cancelling tasks.
+2026-09-29 14:00:53,625 | INFO     | kaleido.kaleido | Exiting Kaleido/Choreo.
+2026-09-29 14:00:53,626 | INFO     | modulos.graficos | Grafico generado: C:\Users\PC41\Desktop\Dev\Informe Diario\informe_precios\datos\evol_mibgas.png
+2026-09-29 14:00:53,631 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:53,631 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.
+2026-09-29 14:00:54,768 | INFO     | modulos.generar_pdf | PDF generado: C:\Users\PC41\Desktop\Dev\Informe Diario\salida\Informe Precio Diario 29.09.2026.pdf
+2026-09-29 14:00:54,768 | INFO     | informe | === Informe completado: C:\Users\PC41\Desktop\Dev\Informe Diario\salida\Informe Precio Diario 29.09.2026.pdf ===
+2026-09-29 14:00:54,768 | WARNING  | informe | Datos incompletos, NO se envía el informe. Faltan: Base 4º Trim. - 2026, Base 4º Trim. - 2026
+2026-09-29 14:00:54,892 | INFO     | modulos.enviar_correo | Alerta enviada a tbrellenthin@medhesa.es (2 faltantes)
+2026-09-29 14:00:54,910 | WARNING  | lanzador | Informe generado con 2 datos faltantes.
+2026-09-29 14:00:54,964 | INFO     | choreographer.utils._tmpfile | TemporaryDirectory.cleanup() worked.
+2026-09-29 14:00:54,965 | INFO     | choreographer.utils._tmpfile | shutil.rmtree worked.

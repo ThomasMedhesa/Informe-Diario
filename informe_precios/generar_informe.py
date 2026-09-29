@@ -18,6 +18,7 @@ import pandas as pd
 
 from modulos import (
     cargar_historicos,
+    contratos_omip,
     descargar_mibgas,
     descargar_omie,
     descargar_omip,
@@ -62,28 +63,39 @@ def _actuales_desde_historico(hist, contratos):
     return salida
 
 
-def _faltantes_contratos(contratos, actuales):
-    """Faltantes de una tabla de futuros (un ítem por contrato sin precio)."""
+def _faltantes_contratos(mercado, contratos, actuales):
+    """Faltantes de una tabla de futuros (un ítem por contrato sin precio).
+
+    ``clave`` lleva el mercado ("ELEC:"/"GAS:") porque electricidad y gas
+    comparten columna historico: sin el, un unico campo manual sobrescribiria
+    el precio de los dos mercados a la vez.
+    """
     faltan = []
     for (etiqueta, precio), (_, _, col) in zip(actuales, contratos):
         if precio is None:
-            faltan.append({"clave": col, "nombre": etiqueta})
+            faltan.append({
+                "clave": f"{mercado}:{col}",
+                "nombre": f"{etiqueta} ({mercado.lower()})",
+            })
     return faltan
 
 
-def _datos_faltantes(precio_omie, precio_mibgas, futuros_elec, futuros_gas):
+def _datos_faltantes(precio_omie, precio_mibgas, futuros_elec, contratos_elec,
+                     futuros_gas, contratos_gas):
     """Devuelve la lista de datos imprescindibles que faltan para el envío.
 
-    Cualquier valor ausente (precio OMIE, MIBGAS o un contrato de futuros
-    concreto) bloquea el envío automático del informe.
+    Solo se consideran los contratos que OMIP publica ese día: los que han
+    caducado se retiran de la ventana y no bloquean nada (ver
+    modulos/contratos_omip.py). Cualquier valor ausente entre los vigentes
+    (precio OMIE, MIBGAS o un contrato concreto) sí bloquea el envío.
     """
     faltan = []
     if precio_omie is None:
         faltan.append({"clave": "omie", "nombre": "Precio medio OMIE (mañana)"})
     if precio_mibgas is None:
         faltan.append({"clave": "mibgas", "nombre": "Precio MIBGAS (hoy)"})
-    faltan += _faltantes_contratos(config.CONTRATOS_ELEC, futuros_elec)
-    faltan += _faltantes_contratos(config.CONTRATOS_GAS, futuros_gas)
+    faltan += _faltantes_contratos("ELEC", contratos_elec, futuros_elec)
+    faltan += _faltantes_contratos("GAS", contratos_gas, futuros_gas)
     return faltan
 
 
@@ -100,6 +112,26 @@ def _resumen_manual(manual):
     partes = [k for k in ("precio_omie", "precio_mibgas") if manual.get(k)]
     partes += [f"{k}={v}" for k, v in futuros.items()]
     return ", ".join(partes) or "ninguno"
+
+
+def _avisar_manual_no_aplicado(manual, contratos_elec, contratos_gas):
+    """Avisa en el log de los datos manuales que no corresponden a nada.
+
+    Pasa cuando el operador completa un contrato que ya ha caducado o cuyo
+    nombre no existe: el valor se ignora en silencio, asi que sin este aviso
+    creeria haberselo aplicado.
+    """
+    futuros = manual.get("futuros") or {}
+    if not futuros:
+        return
+    columnas = {c[2] for c in contratos_elec} | {c[2] for c in contratos_gas}
+    validas = columnas | {f"{m}:{col}" for m in ("ELEC", "GAS") for col in columnas}
+    ignorados = [k for k in futuros if k not in validas]
+    if ignorados:
+        log.warning(
+            "Datos manuales ignorados, no corresponden a ningún contrato vigente: %s",
+            ", ".join(ignorados),
+        )
 
 
 def _escribir_estado(fecha_hoy, resultado):
@@ -150,7 +182,8 @@ def ejecutar(fecha=None, enviar=False, manual=None):
     log.info("=== Fecha de informe: %s (entrega mañana: %s) ===", fecha_hoy, fecha_entrega)
 
     hist_elec = hist_gas = hist_mibgas = hist_omie = None
-    actuales_elec = actuales_gas = {}
+    contratos_elec = contratos_gas = []
+    ventana_cache = contratos_omip.cargar_cache()
 
     # OMIE
     try:
@@ -160,19 +193,24 @@ def ejecutar(fecha=None, enviar=False, manual=None):
 
     # OMIP electricidad
     try:
-        hist_elec, actuales_elec = descargar_omip.acumular_electricidad(fecha_entrega)
+        hist_elec, _, contratos_elec = descargar_omip.acumular_electricidad(fecha_entrega)
     except Exception as e:  # noqa: BLE001
         log.error("Error OMIP electricidad: %s", e)
         hist_elec = _leer_historico(config.CSV_OMIP_ELEC)
-        actuales_elec = dict(_actuales_desde_historico(hist_elec, config.CONTRATOS_ELEC))
+        contratos_elec = list(ventana_cache.get("electricidad", []))
 
     # OMIP gas
     try:
-        hist_gas, actuales_gas = descargar_omip.acumular_gas(fecha_entrega)
+        hist_gas, _, contratos_gas = descargar_omip.acumular_gas(fecha_entrega)
     except Exception as e:  # noqa: BLE001
         log.error("Error OMIP gas: %s", e)
         hist_gas = _leer_historico(config.CSV_OMIP_GAS)
-        actuales_gas = dict(_actuales_desde_historico(hist_gas, config.CONTRATOS_GAS))
+        contratos_gas = list(ventana_cache.get("gas", []))
+
+    log.info("Ventana de contratos electricidad: %s",
+             ", ".join(c[1] for c in contratos_elec) or "ninguno")
+    log.info("Ventana de contratos gas: %s",
+             ", ".join(c[1] for c in contratos_gas) or "ninguno")
 
     # MIBGAS
     try:
@@ -204,8 +242,8 @@ def ejecutar(fecha=None, enviar=False, manual=None):
                 precio_mibgas_ant = round(h.iloc[-2]["precio"], 2)
             log.info("Precio MIBGAS hoy (%s): %s", h.iloc[-1]["fecha"].date(), precio_mibgas)
 
-    futuros_elec = _actuales_desde_historico(hist_elec, config.CONTRATOS_ELEC)
-    futuros_gas = _actuales_desde_historico(hist_gas, config.CONTRATOS_GAS)
+    futuros_elec = _actuales_desde_historico(hist_elec, contratos_elec)
+    futuros_gas = _actuales_desde_historico(hist_gas, contratos_gas)
 
     # 3b) Datos manuales (solo si el operador los introduce en la web)
     if manual:
@@ -213,26 +251,27 @@ def ejecutar(fecha=None, enviar=False, manual=None):
         precio_mibgas = _override_num(manual, "precio_mibgas", precio_mibgas)
         futuros_manual = manual.get("futuros") or {}
         futuros_elec = [
-            (et, futuros_manual.get(col, precio))
-            for (et, precio), (_, _, col)
-            in zip(futuros_elec, config.CONTRATOS_ELEC)
+            (et, contratos_omip.valor_manual(futuros_manual, col, "ELEC", precio))
+            for (et, precio), (_, _, col) in zip(futuros_elec, contratos_elec)
         ]
         futuros_gas = [
-            (et, futuros_manual.get(col, precio))
-            for (et, precio), (_, _, col)
-            in zip(futuros_gas, config.CONTRATOS_GAS)
+            (et, contratos_omip.valor_manual(futuros_manual, col, "GAS", precio))
+            for (et, precio), (_, _, col) in zip(futuros_gas, contratos_gas)
         ]
         log.info("Datos manuales aplicados: %s", _resumen_manual(manual))
+        _avisar_manual_no_aplicado(manual, contratos_elec, contratos_gas)
 
     # 3c) Control de calidad: datos imprescindibles presentes
-    faltan = _datos_faltantes(precio_omie, precio_mibgas, futuros_elec, futuros_gas)
+    faltan = _datos_faltantes(precio_omie, precio_mibgas,
+                              futuros_elec, contratos_elec,
+                              futuros_gas, contratos_gas)
 
     # 4) Gráficos
     carpeta = config.DATOS_DIR
     grafico_horario = graficos.grafico_horario_omie(hist_omie, fecha_entrega) \
         if hist_omie is not None else None
-    graficos_elec = graficos.graficos_electricidad(hist_elec, carpeta)
-    graficos_gas = graficos.graficos_gas_futuros(hist_gas, carpeta)
+    graficos_elec = graficos.graficos_electricidad(hist_elec, carpeta, contratos_elec)
+    graficos_gas = graficos.graficos_gas_futuros(hist_gas, carpeta, contratos_gas)
     grafico_mibgas = graficos.grafico_mibgas_largo(hist_mibgas, carpeta)
 
     # 5) PDF
