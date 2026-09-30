@@ -1,8 +1,8 @@
 {
-  "fecha": "2026-09-29",
-  "fecha_entrega": "2026-09-30",
-  "pdf": "Informe Precio Diario 29.09.2026.pdf",
-  "enviado": false,
-  "motivo": "solo_generacion",
+  "fecha": "2026-09-30",
+  "fecha_entrega": "2026-10-01",
+  "pdf": "Informe Precio Diario 30.09.2026.pdf",
+  "enviado": true,
+  "motivo": "ok",
   "faltan": []
 }

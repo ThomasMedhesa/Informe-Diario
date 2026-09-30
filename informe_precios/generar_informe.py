@@ -191,17 +191,21 @@ def ejecutar(fecha=None, enviar=False, manual=None):
     except Exception as e:  # noqa: BLE001
         log.error("Error OMIE: %s", e)
 
-    # OMIP electricidad
+    # OMIP electricidad. OJO: a OMIP se le pregunta por la sesion de HOY, no por
+    # la de manana (que es lo que se le pregunta a OMIE). La pagina de una
+    # sesion que aun no ha ocurrido sale con la tira de contratos recortada por
+    # su "Trading last day", asi que al preguntar por manana desaparece el mes
+    # que caduca hoy y el informe lo daria como dato faltante.
     try:
-        hist_elec, _, contratos_elec = descargar_omip.acumular_electricidad(fecha_entrega)
+        hist_elec, _, contratos_elec = descargar_omip.acumular_electricidad(fecha_hoy)
     except Exception as e:  # noqa: BLE001
         log.error("Error OMIP electricidad: %s", e)
         hist_elec = _leer_historico(config.CSV_OMIP_ELEC)
         contratos_elec = list(ventana_cache.get("electricidad", []))
 
-    # OMIP gas
+    # OMIP gas (sesion de hoy, igual que electricidad)
     try:
-        hist_gas, _, contratos_gas = descargar_omip.acumular_gas(fecha_entrega)
+        hist_gas, _, contratos_gas = descargar_omip.acumular_gas(fecha_hoy)
     except Exception as e:  # noqa: BLE001
         log.error("Error OMIP gas: %s", e)
         hist_gas = _leer_historico(config.CSV_OMIP_GAS)
