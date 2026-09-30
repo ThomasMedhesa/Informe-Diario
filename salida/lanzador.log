@@ -2747,3 +2747,24 @@ jinja2.exceptions.TemplateNotFound: revision.html
 2026-09-30 14:00:34,427 | INFO     | modulos.enviar_correo | Enviado a tbrellenthin@medhesa.es
 2026-09-30 14:00:34,532 | INFO     | modulos.enviar_correo | Enviado a esanroman@medhesa.es
 2026-09-30 14:00:34,541 | INFO     | informe | Informe enviado a 2 destinatarios
+2026-09-30 14:23:55,977 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-30 14:23:56,505 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:23:56] "GET / HTTP/1.1" 200 -
+2026-09-30 14:23:56,702 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:23:56] "GET /api/estado HTTP/1.1" 200 -
+2026-09-30 14:23:56,703 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:23:56] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-30 14:23:56,737 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-30 14:23:56,738 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:23:56] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-30 14:23:56,879 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:23:56] "GET /pdf/Informe%20Precio%20Diario%2030.09.2026.pdf HTTP/1.1" 200 -
+2026-09-30 14:23:56,933 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:23:56] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-30 14:24:06,898 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:24:06] "GET /api/estado HTTP/1.1" 200 -
+2026-09-30 14:24:13,056 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:24:13] "[33mGET /revision.html HTTP/1.1[0m" 404 -
+2026-09-30 14:24:21,823 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:24:21] "GET / HTTP/1.1" 200 -
+2026-09-30 14:29:47,055 | INFO     | lanzador | Servidor iniciado en http://127.0.0.1:8000
+2026-09-30 14:29:47,597 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:47] "GET / HTTP/1.1" 200 -
+2026-09-30 14:29:47,908 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:47] "GET /api/pdfs HTTP/1.1" 200 -
+2026-09-30 14:29:47,921 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:47] "GET /api/estado HTTP/1.1" 200 -
+2026-09-30 14:29:47,960 | INFO     | modulos.contactos | Destinatarios (2): tbrellenthin@medhesa.es, esanroman@medhesa.es
+2026-09-30 14:29:47,961 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:47] "GET /api/contactos HTTP/1.1" 200 -
+2026-09-30 14:29:48,009 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:48] "[36mGET /pdf/Informe%20Precio%20Diario%2030.09.2026.pdf HTTP/1.1[0m" 304 -
+2026-09-30 14:29:48,191 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:48] "GET /api/programacion HTTP/1.1" 200 -
+2026-09-30 14:29:57,883 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:57] "GET /api/estado HTTP/1.1" 200 -
+2026-09-30 14:29:57,947 | INFO     | werkzeug | 127.0.0.1 - - [30/Sep/2026 14:29:57] "GET / HTTP/1.1" 200 -

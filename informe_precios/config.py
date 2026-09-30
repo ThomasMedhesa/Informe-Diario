@@ -143,6 +143,15 @@ CUERPO = (
 NOMBRE_FIRMA = "Atenci\u00f3n al Cliente (atencionalcliente@medhesa.es)"
 FIRMAS_DIR = Path(os.environ.get("APPDATA", str(RAIZ))) / "Microsoft" / "Signatures"
 
+# El envío es uno a uno (un correo por destinatario) y los servidores limitan
+# los envíos seguidos: los típicos de Exchange Online aceptan unos 30
+# mensajes/minuto. Para no chocar con ese límite, el envío se hace en lotes de
+# ENVIO_LOTE destinatarios con una pausa de ENVIO_PAUSA segundos entre lotes.
+# Con menos contactos que un lote no hay ninguna pausa. Poner ENVIO_PAUSA a 0
+# desactiva las pausas.
+ENVIO_LOTE = 25
+ENVIO_PAUSA = 30
+
 # ---------------------------------------------------------------------------
 # Aplicacion de escritorio (lanzador)
 # ---------------------------------------------------------------------------
@@ -160,6 +169,7 @@ HORA_ENVIO = "14:00"
 # ---------------------------------------------------------------------------
 ALERTA_DESTINO = "tbrellenthin@medhesa.es"
 ASUNTO_ALERTA = "ALERTA: Informe diario NO enviado (datos incompletos)"
+ASUNTO_ALERTA_ENVIO = "ALERTA: Informe diario no entregado a alg\u00fan destinatario"
 ULTIMO_ESTADO_JSON = SALIDA_DIR / "ultimo_estado.json"
 
 # ---------------------------------------------------------------------------

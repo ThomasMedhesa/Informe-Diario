@@ -10,7 +10,7 @@ import json
 import logging
 import os
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
@@ -43,6 +43,7 @@ class Resultado:
     enviado: bool
     motivo: str
     fecha_hoy: object
+    fallidos_envio: list = field(default_factory=list)
 
 
 def _leer_historico(csv):
@@ -138,18 +139,22 @@ def _escribir_estado(fecha_hoy, resultado):
     """Guarda en salida/ultimo_estado.json el estado de la última ejecución.
 
     La web lo lee para mostrar la alerta si el envío automático quedó
-    bloqueado por datos incompletos.
+    bloqueado por datos incompletos, o si algún destinatario no recibió el
+    informe (``fallidos_envio``).
     """
+    estado = {
+        "fecha": f"{fecha_hoy:%Y-%m-%d}",
+        "fecha_entrega": f"{(fecha_hoy + pd.Timedelta(days=1)):%Y-%m-%d}",
+        "pdf": Path(str(resultado.pdf)).name,
+        "enviado": resultado.enviado,
+        "motivo": resultado.motivo,
+        "faltan": resultado.faltan,
+    }
+    if resultado.fallidos_envio:
+        estado["fallidos_envio"] = resultado.fallidos_envio
     try:
         config.ULTIMO_ESTADO_JSON.write_text(
-            json.dumps({
-                "fecha": f"{fecha_hoy:%Y-%m-%d}",
-                "fecha_entrega": f"{(fecha_hoy + pd.Timedelta(days=1)):%Y-%m-%d}",
-                "pdf": Path(str(resultado.pdf)).name,
-                "enviado": resultado.enviado,
-                "motivo": resultado.motivo,
-                "faltan": resultado.faltan,
-            }, ensure_ascii=False, indent=2),
+            json.dumps(estado, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
     except Exception:  # noqa: BLE001
@@ -300,6 +305,7 @@ def ejecutar(fecha=None, enviar=False, manual=None):
 
     # 6) Envío por correo (solo si se pide explícitamente)
     enviado = False
+    fallidos_envio = []
     motivo = "sin_datos" if faltan else ""
     if not enviar:
         motivo = "solo_generacion"
@@ -325,13 +331,28 @@ def ejecutar(fecha=None, enviar=False, manual=None):
             motivo = "sin_contactos"
             log.warning("Sin destinatarios, se omite el envío")
         else:
-            enviados = enviar_correo.enviar_informe(destino, contactos)
-            enviado = True
-            motivo = "ok"
-            log.info("Informe enviado a %d destinatarios", enviados)
+            # El envío es a destinatario: unos pueden fallar sin que eso quite
+            # el informe a los demás, así que se distingue el envío completo
+            # del parcial y del total.
+            envio = enviar_correo.enviar_informe(destino, contactos, fecha=fecha_hoy)
+            fallidos_envio = list(envio.fallidos)
+            enviado = envio.enviados > 0
+            if envio.completo:
+                motivo = "ok"
+                log.info("Informe enviado a %d destinatarios", envio.enviados)
+            elif enviado:
+                motivo = "envio_parcial"
+                log.warning("Informe enviado solo a %d de %d destinatarios. "
+                            "Sin informe: %s", envio.enviados, envio.total,
+                            ", ".join(envio.fallidos))
+            else:
+                motivo = "error_envio"
+                log.error("No se pudo enviar el informe a ningún destinatario "
+                          "de %d", envio.total)
 
     resultado = Resultado(pdf=destino, faltan=faltan, enviado=enviado,
-                          motivo=motivo, fecha_hoy=fecha_hoy)
+                          motivo=motivo, fecha_hoy=fecha_hoy,
+                          fallidos_envio=fallidos_envio)
     _escribir_estado(fecha_hoy, resultado)
     return resultado
 

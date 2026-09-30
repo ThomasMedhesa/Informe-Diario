@@ -321,9 +321,14 @@ async function enviar() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pdf: seleccionado }),
     });
-    e.classList.add("ok");
-    e.textContent = "Enviado a " + r.enviados + " destinatario(s)." +
-      (faltanActual.length ? " Aviso: el informe se envió con algunos datos incompletos." : "");
+    e.classList.add(r.fallidos && r.fallidos.length ? "error" : "ok");
+    if (r.fallidos && r.fallidos.length) {
+      e.textContent = "Enviado a " + r.enviados + " de " + r.total +
+        " destinatario(s). Sin informe: " + r.fallidos.join(", ");
+    } else {
+      e.textContent = "Enviado a " + r.enviados + " destinatario(s)." +
+        (faltanActual.length ? " Aviso: el informe se envió con algunos datos incompletos." : "");
+    }
     ocultarAlerta();
   } catch (err) {
     e.classList.add("error");
@@ -528,6 +533,14 @@ function ocultarAlerta() {
   a.innerHTML = "";
 }
 
+function mostrarAlertaEnvio(fallidos, contexto) {
+  const a = $("alertaFaltantes");
+  a.classList.remove("oculto");
+  a.innerHTML = (contexto || "") + "El informe no ha llegado a estos " +
+    fallidos.length + " destinatario(s): <b>" + fallidos.join("</b>, <b>") +
+    "</b>. Revisa las direcciones y reenvía si el fallo es del servidor de correo.";
+}
+
 function abrirModalManual(faltan) {
   faltanActual = faltan;
   $("estadoManual").textContent = "";
@@ -627,12 +640,17 @@ async function cargarEstado() {
   try {
     const r = await json("/api/estado");
     const st = r.estado;
-    if (st && st.faltan && st.faltan.length) {
+    if (!st) return;
+    if (st.faltan && st.faltan.length) {
       faltanActual = st.faltan;
       const fecha = st.fecha || "";
       const ctx = st.enviado ? ""
         : "El envío automático del " + fecha + " no se realizó por datos incompletos. ";
       mostrarAlertaFaltantes(st.faltan, ctx);
+    } else if (st.fallidos_envio && st.fallidos_envio.length) {
+      const fecha = st.fecha || "";
+      mostrarAlertaEnvio(st.fallidos_envio,
+        "Envío automático del " + fecha + " con errores. ");
     }
   } catch (err) { /* silencioso: la alerta se mostrará al generar */ }
 }

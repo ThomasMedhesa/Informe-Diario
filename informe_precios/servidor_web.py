@@ -309,7 +309,7 @@ def api_estado():
         return jsonify({"estado": None})
 
 
-def _marcar_enviado(nombre_pdf):
+def _marcar_enviado(nombre_pdf, fallidos=None):
     """Actualiza el estado guardado tras un envío manual de ese PDF."""
     ruta = config.ULTIMO_ESTADO_JSON
     if not ruta.exists():
@@ -318,8 +318,15 @@ def _marcar_enviado(nombre_pdf):
         data = json.loads(ruta.read_text(encoding="utf-8"))
         if data.get("pdf") != nombre_pdf:
             return
+        fallidos = list(fallidos or [])
         data["enviado"] = True
-        data["motivo"] = "ok"
+        data["motivo"] = "envio_parcial" if fallidos else "ok"
+        # Si el reenvío va a todos, se borra el aviso anterior: si no, la web
+        # seguiría enseñando destinatarios fallidos que ya lo recibieron.
+        if fallidos:
+            data["fallidos_envio"] = fallidos
+        else:
+            data.pop("fallidos_envio", None)
         ruta.write_text(json.dumps(data, ensure_ascii=False, indent=2),
                         encoding="utf-8")
     except Exception:  # noqa: BLE001
@@ -343,9 +350,10 @@ def api_enviar():
     try:
         _com_init()
         destino = config.SALIDA_DIR / nombre
-        enviados = enviar_correo.enviar_informe(destino, lista)
-        _marcar_enviado(nombre)
-        return jsonify({"ok": True, "enviados": enviados,
+        envio = enviar_correo.enviar_informe(destino, lista)
+        _marcar_enviado(nombre, envio.fallidos)
+        return jsonify({"ok": True, "enviados": envio.enviados,
+                        "total": envio.total, "fallidos": envio.fallidos,
                         "contactos": lista, "pdf": nombre})
     except Exception as e:  # noqa: BLE001
         log.exception("Error enviando informe")
