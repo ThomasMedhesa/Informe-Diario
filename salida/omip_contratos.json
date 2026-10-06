@@ -1,11 +1,6 @@
 {
   "electricidad": [
     [
-      "Base Octubre - 2026",
-      "M Oct-26",
-      "BASE_M_Oct-26"
-    ],
-    [
       "Base Noviembre - 2026",
       "M Nov-26",
       "BASE_M_Nov-26"
@@ -14,6 +9,11 @@
       "Base Diciembre - 2026",
       "M Dec-26",
       "BASE_M_Dec-26"
+    ],
+    [
+      "Base Enero - 2027",
+      "M Jan-27",
+      "BASE_M_Jan-27"
     ],
     [
       "Base 1º Trim. - 2027",
@@ -48,11 +48,6 @@
   ],
   "gas": [
     [
-      "Base Octubre - 2026",
-      "M Oct-26",
-      "BASE_M_Oct-26"
-    ],
-    [
       "Base Noviembre - 2026",
       "M Nov-26",
       "BASE_M_Nov-26"
@@ -61,6 +56,11 @@
       "Base Diciembre - 2026",
       "M Dec-26",
       "BASE_M_Dec-26"
+    ],
+    [
+      "Base Enero - 2027",
+      "M Jan-27",
+      "BASE_M_Jan-27"
     ],
     [
       "Base 1º Trim. - 2027",
