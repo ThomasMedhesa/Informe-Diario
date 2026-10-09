@@ -217,6 +217,20 @@ def api_programacion_guardar():
     })
 
 
+@app.route("/api/programacion/eliminar", methods=["POST"])
+def api_programacion_eliminar():
+    try:
+        programar_tarea.eliminar_tarea()
+    except Exception as e:  # noqa: BLE001
+        log.exception("Error eliminando la tarea")
+        return jsonify({"error": f"Error eliminando la tarea: {e}"}), 500
+    return jsonify({
+        "hora": config.HORA_ENVIO,
+        "habilitado": False,
+        "tarea": None,
+    })
+
+
 @app.route("/api/generar", methods=["POST"])
 def api_generar():
     datos = request.get_json(silent=True) or {}

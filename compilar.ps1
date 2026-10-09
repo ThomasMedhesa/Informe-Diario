@@ -9,7 +9,7 @@ python -m pip install --quiet --disable-pip-version-check -r requirements.txt
 python -m pip install --quiet --disable-pip-version-check pyinstaller
 
 Write-Host '== 2/3  Icono de la aplicacion ==' -ForegroundColor Cyan
-python -c "from PIL import Image; im=Image.open('LOGO-MEDHESA.jpg').convert('RGBA'); im.thumbnail((256,256)); im.save('informe_precios/web/informe_diario.ico', sizes=[(16,16),(32,32),(48,48),(64,64),(128,128),(256,256)])"
+python -c "from PIL import Image; im=Image.open('icono medhesa.png').convert('RGBA'); im.thumbnail((256,256)); im.save('informe_precios/web/informe_diario.ico', sizes=[(16,16),(32,32),(48,48),(64,64),(128,128),(256,256)])"
 
 Write-Host '== 3/3  Empaquetado con PyInstaller ==' -ForegroundColor Cyan
 if (Test-Path -LiteralPath '.\aplicacion') { Remove-Item -LiteralPath '.\aplicacion' -Recurse -Force }

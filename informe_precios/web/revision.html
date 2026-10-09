@@ -41,6 +41,7 @@
   .btn:disabled { opacity: .55; cursor: not-allowed; }
   .btn-generar { background: var(--azul-c); }
   .btn-enviar { background: var(--verde); }
+  .btn-danger { background: var(--rojo); color: #fff; }
   .btn-ghost { background: none; color: var(--gris); border: 1px solid var(--borde); font-weight: 500; }
   .lista { max-height: 240px; overflow-y: auto; border: 1px solid var(--borde); border-radius: 6px; margin-top: 10px; }
   .pdf-item {
@@ -186,6 +187,7 @@
         <input type="time" id="progHora" value="14:05" class="ancho-auto" style="width:110px">
       </div>
       <button class="btn btn-ghost" id="btnGuardarProg">Guardar programación</button>
+      <button class="btn btn-danger oculto" id="btnEliminarProg" style="margin-top:8px">Eliminar tarea programada</button>
       <div class="estado" id="estadoProg"></div>
       <div class="avisos" id="infoProg" style="margin-top:4px"></div>
     </section>
@@ -484,6 +486,7 @@ async function cargarProgramacion() {
 
 function actualizarInfoProg(tarea) {
   const t = tarea || null;
+  $("btnEliminarProg").classList.toggle("oculto", !t);
   if ($("progHab").checked) {
     const prox = t && t.proxima && t.proxima.toLowerCase() !== "n/a"
       ? "Próxima ejecución: " + t.proxima : "";
@@ -491,6 +494,26 @@ function actualizarInfoProg(tarea) {
       (prox || (t && t.estado ? "Estado: " + t.estado : "")) || "Tarea programada activada.";
   } else {
     $("infoProg").textContent = "Envío automático desactivado.";
+  }
+}
+
+async function eliminarProgramacion() {
+  if (!window.confirm("¿Eliminar la tarea programada de Windows?")) return;
+  const b = $("btnEliminarProg"), e = $("estadoProg");
+  boton(b, false);
+  e.classList.remove("error", "ok");
+  e.textContent = "Eliminando tarea...";
+  try {
+    const r = await json("/api/programacion/eliminar", { method: "POST" });
+    $("progHab").checked = !!r.habilitado;
+    actualizarInfoProg(r.tarea);
+    e.classList.add("ok");
+    e.textContent = "Tarea programada eliminada.";
+  } catch (err) {
+    e.classList.add("error");
+    e.textContent = err.message;
+  } finally {
+    boton(b, true);
   }
 }
 
@@ -671,6 +694,7 @@ $("archivoImportar").addEventListener("change", () => {
   $("archivoImportar").value = "";
 });
 $("btnGuardarProg").onclick = guardarProgramacion;
+$("btnEliminarProg").onclick = eliminarProgramacion;
 
 (async () => {
   $("cabecera-info").textContent = new Date().toLocaleString("es-ES", {

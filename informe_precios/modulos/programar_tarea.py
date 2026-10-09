@@ -159,12 +159,12 @@ def desactivar():
 
 
 def eliminar_tarea():
-    """Elimina la tarea. Devuelve True si existía y se pudo borrar."""
+    """Elimina la tarea y falla explícitamente si Windows no pudo borrarla."""
     cod, sal = _run(["/Delete", "/TN", config.TAREA_WINDOWS_NOMBRE, "/F"])
     if cod == 0:
         log.info("Tarea eliminada: %s", config.TAREA_WINDOWS_NOMBRE)
         return True
-    return False
+    raise RuntimeError(sal or "No se pudo eliminar la tarea")
 
 
 def estado_tarea():
